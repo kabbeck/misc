@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YubiKey Leitfaden</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.0.4/dist/reset.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.0.4/dist/reveal.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.0.4/dist/theme/beige.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.0.4/plugin/highlight/zenburn.css">
+    <link rel="stylesheet" href="yubikey.css">
+</head>
+<body>
+    <div class="reveal">
+        <!-- Slide-Nummer oben rechts -->
+        <div class="slide-number-top"></div>
+        
+        <div class="slides">
+            <!-- Titel -->
+            <section class="title-slide">
+                <h1>YubiKey Leitfaden</h1>
+                <h2>Installation & Verwendung</h2>
+
+                <p style="margin-top: 1.5em;">Basierend auf <a href="https://github.com/drduh/YubiKey-Guide">Dr. Duh's YubiKey Guide</a></p>
+
+                <div style="display: flex; justify-content: center; gap: 3em; margin-top: 2em;">
+                    <div style="text-align: center;">
+                        <img src="yubikey5cnano-hero.webp" 
+                             alt="YubiKey 5C Nano" 
+                             style="height: 200px; background: transparent; border: none; box-shadow: none;">
+                        <p style="font-size: 1.2em; margin-top: 1em;">YubiKey 5C Nano</p>
+                    </div>
+                    <div style="text-align: center;">
+                        <img src="yubikey5cnfc-hero.webp" 
+                             alt="YubiKey 5C NFC" 
+                             style="height: 200px; background: transparent; border: none; box-shadow: none;">
+                        <p style="font-size: 1.2em; margin-top: 1em;">YubiKey 5C NFC</p>
+                    </div>
+                </div>
+
+            </section>
+            <section>
+
+                <h1>Agenda</h1>
+
+                <ol style="text-align: left; margin: 0.5em auto; max-width: 90%;">
+                    <li>Neuen Key installieren</li>
+                    <li>GPG Zertifikat</li>
+                    <li>SSH per GPG einrichten</li>
+                    <li>ZEIT Dienste mit Yubikey authentifizieren</li>
+                    <li>TOTP, Password Store</li>
+                </ol>
+
+            </section>
+            <section>
+
+                <h2>GPG Schlüsselverwaltung</h2>
+
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1.5em; font-size: 1.6em;">
+                    <div style="display: flex; gap: 1.5em; flex: 1;">
+                        <!-- Links: Air-Gapped Master Key -->
+                        <div style="flex: 1; text-align: center; padding: 0.8em; background: rgba(76, 175, 80, 0.1); border-radius: 10px;">
+                            <div style="font-size: 2em; margin-bottom: 0.2em;">🔐</div>
+                            <h3 style="font-size: 1.9em; margin: 0.2em 0;">Main Key ∞</h3>
+                            <p style="font-size: 1.3em; margin: 0.3em 0; line-height: 1.6;">💿 Live-CD<br/>💾 USB-Sticks<br/>🏡 Sicher<br/>🚫🌐 Offline</p>
+                            <p style="font-size: 1.1em; margin: 0.3em 0; color: #666; font-style: italic;">Stufe 7</p>
+                        </div>
+
+                        <!-- Pfeil -->
+                        <div style="display: flex; align-items: center; font-size: 2em; color: #666;">
+                <p>            →</p>
+                        </div>
+
+                        <!-- Rechts: IT Arbeitsrechner mit YubiKey -->
+                        <div style="flex: 1; text-align: center; padding: 0.8em; background: rgba(33, 150, 243, 0.1); border-radius: 10px;">
+                            <div style="font-size: 2em; margin-bottom: 0.2em;">🔑</div>
+                            <h3 style="font-size: 1.9em; margin: 0.2em 0;">Subkeys ⏰</h3>
+                            <p style="font-size: 1.3em; margin: 0.3em 0; line-height: 1.6;">💻 IT-Rechner<br/>🔐 YubiKey<br/>✅ SSH/Git/GPG<br/><span style="color: #666;">Widerrufbar</span></p>
+                        </div>
+                    </div>
+
+                    <!-- Gelbe Box rechts -->
+                    <div style="flex: 0 0 30%; padding: 0.7em; background: rgba(255, 193, 7, 0.1); border-radius: 8px; border-left: 4px solid #FFC107; font-size: 1.7em;">
+                        <span>📖 <strong>Sichere Umgebung:</strong><br/><a href="https://github.com/drduh/YubiKey-Guide?tab=readme-ov-file#prepare-environment" target="_blank" style="color: #1976D2; text-decoration: none; font-weight: 500;">7 Sicherheitsstufen</a></span>
+                    </div>
+                </div>
+
+            </section>
+            <section>
+
+                <h2>Erforderliche Software</h2>
+
+                <p>Diese Tools vor dem Start installieren:</p>
+
+                <pre><code class="bash">
+                # Homebrew (macOS)
+                brew install gnupg yubikey-personalization ykman pinentry-mac
+                
+                # Debian/Ubuntu
+                apt-get install gnupg2 yubikey-personalization scdaemon
+                
+                # Installation überprüfen
+                gpg --version
+                ykman --version
+                </code></pre>
+
+            </section>
+            <section>
+
+                <h2>YubiKey Manager (ykman)</h2>
+
+                <p>Das primäre Tool zur Verwaltung Ihres YubiKeys:</p>
+
+                <pre><code class="bash">
+                # YubiKey-Erkennung prüfen
+                ykman list
+                
+                # Geräteinformationen anzeigen
+                ykman info
+                
+                # Firmware-Version prüfen
+                ykman info | grep Firmware
+                </code></pre>
+
+                <div style="background: rgba(255, 193, 7, 0.1); border-left: 4px solid #FFC107; padding: 0.8em 1em; margin: 0.5em 0; border-radius: 4px;">⚠️ <strong>Wichtig</strong>: Echtheit des YubiKeys verifizieren: <a href="https://www.yubico.com/genuine/" target="_blank" style="color: #1976D2; text-decoration: none; font-weight: 500;">Verify your YubiKey</a></div>
+
+            </section>
+            <section>
+
+                <h2>Ersteinrichtung - Schritt 1</h2>
+
+                <h3>Standard-PINs ändern</h3>
+
+                <p>Der YubiKey wird mit Standard-PINs ausgeliefert, die <strong>unbedingt geändert werden müssen</strong>:</p>
+
+                <pre><code class="bash">
+                # Benutzer-PIN ändern (Standard: 123456)
+                gpg --card-edit
+                > admin
+                > passwd
+                > 1  # PIN ändern
+                
+                # Admin-PIN ändern (Standard: 12345678)
+                > 3  # Admin-PIN ändern
+                > q
+                
+                # PIN-Versuche auf 5 erhöhen
+                ykman openpgp access set-retries 5 5 5 -f -a $ADMIN_PIN
+                </code></pre>
+
+                <div style="background: rgba(255, 193, 7, 0.1); border-left: 4px solid #FFC107; padding: 0.8em 1em; margin: 0.5em 0; border-radius: 4px;">⚠️ <strong>Warnung</strong>: Nach Erreichen der maximalen fehlgeschlagenen PIN-Versuche wird der Yubikey gesperrt!</div>
+
+                <p>📖 <strong>Mehr Details:</strong> <a href="https://github.com/drduh/YubiKey-Guide#change-pin" target="_blank" style="color: #1976D2; text-decoration: none; font-weight: 500;">Change PIN</a></p>
+
+            </section>
+            <section>
+
+                <h2>Ersteinrichtung - Schritt 2</h2>
+
+                <h3>Karteninformationen festlegen</h3>
+
+                <pre><code class="bash">
+                gpg --card-edit
+                > admin
+                > name      # Karteninhaber-Name festlegen
+                > lang      # Sprachpräferenz festlegen (z.B. de)
+                > login     # Login-E-Mail festlegen
+                > quit
+                </code></pre>
+
+            </section>
+            <section>
+
+                <h2>GPG-Schlüssel generieren</h2>
+
+                <h3>Option 1: Schlüssel auf YubiKey generieren (ich habe Option 2 gewählt)</h3>
+
+                <pre><code class="bash">
+                gpg --card-edit
+                > admin
+                > generate
+                
+                # Eingabeaufforderungen folgen:
+                # - Gültigkeitsdauer des Schlüssels
+                # - Echter Name
+                # - E-Mail-Adresse
+                </code></pre>
+
+                <p><strong>Vorteil</strong>: Schlüssel existieren niemals außerhalb des YubiKey</p>
+                <p><strong>Nachteil</strong>: Können nicht gesichert werden</p>
+
+            </section>
+            <section>
+
+                <h2>GPG-Schlüssel generieren</h2>
+
+                <h3>Option 2: Schlüssel auf Computer generieren, auf YubiKey übertragen (verkürzte Darstellung)</h3>
+
+                <pre><code class="bash">
+                # Master-Schlüssel generieren
+                gpg --full-generate-key
+                
+                # Unterschlüssel für Signierung, Verschlüsselung, Authentifizierung erstellen
+                gpg --edit-key IHRE_KEY_ID
+                > addkey
+                
+                # Auf YubiKey übertragen
+                > keytocard
+                </code></pre>
+
+                <p><strong>Vorteil</strong>: Schlüssel können gesichert werden</p>
+                <p><strong>Nachteil</strong>: Schlüssel temporär auf Computer</p>
+
+                <p>📖 <strong>Mehr Details (so habe ich es gemacht):</strong> <a href="https://github.com/drduh/YubiKey-Guide#create-certify-key" target="_blank" style="color: #1976D2; text-decoration: none; font-weight: 500;">Create Certify key</a> | <a href="https://github.com/drduh/YubiKey-Guide#create-subkeys" target="_blank" style="color: #1976D2; text-decoration: none; font-weight: 500;">Create Subkeys</a> | <a href="https://github.com/drduh/YubiKey-Guide#verify-keys" target="_blank" style="color: #1976D2; text-decoration: none; font-weight: 500;">Verify keys</a> | <a href="https://github.com/drduh/YubiKey-Guide#backup-keys" target="_blank" style="color: #1976D2; text-decoration: none; font-weight: 500;">Backup keys</a> | <a href="https://github.com/drduh/YubiKey-Guide#export-public-key" target="_blank" style="color: #1976D2; text-decoration: none; font-weight: 500;">Export public key</a> | <a href="https://github.com/drduh/YubiKey-Guide#transfer-subkeys" target="_blank" style="color: #1976D2; text-decoration: none; font-weight: 500;">Transfer subkeys</a></p>
+
+            </section>
+            <section>
+
+                <h2>Schlüsseltypen & Verwendung</h2>
+
+                <table style="font-size: 0.85em; border-collapse: collapse; width: 90%; margin: 1em auto;">
+                    <thead>
+                        <tr>
+                            <th style="border: 1px solid #ddd; padding: 0.6em; background: rgba(0,0,0,0.05); text-align: left;">Schlüsseltyp</th>
+                            <th style="border: 1px solid #ddd; padding: 0.6em; background: rgba(0,0,0,0.05); text-align: left;">Zweck</th>
+                            <th style="border: 1px solid #ddd; padding: 0.6em; background: rgba(0,0,0,0.05); text-align: left;">YubiKey-Slot</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="border: 1px solid #ddd; padding: 0.6em;"><strong>Signatur</strong></td>
+                            <td style="border: 1px solid #ddd; padding: 0.6em;">Commits, E-Mails signieren</td>
+                            <td style="border: 1px solid #ddd; padding: 0.6em;">Slot 1</td>
+                        </tr>
+                        <tr>
+                            <td style="border: 1px solid #ddd; padding: 0.6em;"><strong>Verschlüsselung</strong></td>
+                            <td style="border: 1px solid #ddd; padding: 0.6em;">Nachrichten entschlüsseln</td>
+                            <td style="border: 1px solid #ddd; padding: 0.6em;">Slot 2</td>
+                        </tr>
+                        <tr>
+                            <td style="border: 1px solid #ddd; padding: 0.6em;"><strong>Authentifizierung</strong></td>
+                            <td style="border: 1px solid #ddd; padding: 0.6em;">SSH-Login</td>
+                            <td style="border: 1px solid #ddd; padding: 0.6em;">Slot 3</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </section>
+            <section>
+
+                <h2>SSH-Authentifizierung konfigurieren</h2>
+
+                <h3>SSH-Unterstützung aktivieren</h3>
+
+                <pre><code class="bash">
+                # Zu ~/.gnupg/gpg-agent.conf hinzufügen
+                enable-ssh-support
+                
+                # Agent neu starten
+                gpgconf --kill gpg-agent
+                gpgconf --launch gpg-agent
+                
+                # Zu Shell-Profil hinzufügen (~/.bashrc oder ~/.zshrc)
+                export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
+                </code></pre>
+
+            </section>
+            <section>
+
+                <h2>SSH Public Key exportieren</h2>
+
+                <pre><code class="bash">
+                # Authentifizierungs-Unterschlüssel als SSH Public Key exportieren
+                gpg --export-ssh-key IHRE_EMAIL > ~/.ssh/yubikey.pub
+                
+                # Auf Remote-Server kopieren
+                ssh-copy-id -i ~/.ssh/yubikey.pub user@remote-host
+                
+                # Oder manuell zu ~/.ssh/authorized_keys hinzufügen
+                </code></pre>
+
+            </section>
+            <section>
+
+                <h2>Git Commit Signierung</h2>
+
+                <h3>Git konfigurieren</h3>
+
+                <pre><code class="bash">
+                # GPG-Schlüssel für Signierung festlegen
+                git config --global user.signingkey IHRE_KEY_ID
+                
+                # Automatische Signierung aktivieren
+                git config --global commit.gpgsign true
+                
+                # GPG-Programm festlegen
+                git config --global gpg.program gpg
+                </code></pre>
+
+                <h3>Commits signieren</h3>
+
+                <pre><code class="bash">
+                git commit -S -m "Signierter Commit"
+                </code></pre>
+
+            </section>
+            <section>
+
+                <h2>Alles funktioniert testen</h2>
+
+                <h3>GPG-Karte testen</h3>
+
+                <pre><code class="bash">
+                gpg --card-status
+                </code></pre>
+
+                <h3>SSH testen</h3>
+
+                <pre><code class="bash">
+                ssh-add -L    # Schlüssel auflisten
+                ssh user@host  # Verbindung testen (YubiKey berühren wenn aufgefordert)
+                </code></pre>
+
+                <h3>Signierung testen</h3>
+
+                <pre><code class="bash">
+                echo "test" | gpg --clearsign
+                </code></pre>
+
+            </section>
+            <section>
+
+                <h2>Tägliche Verwendung</h2>
+
+                <h3>YubiKey-Berührungsanforderungen</h3>
+
+                <p>Bei der Durchführung von Operationen sehen Sie:</p>
+                <ul style="text-align: left; margin: 0.5em auto; max-width: 90%;">
+                    <li>💡 <strong>YubiKey LED blinkt</strong> - Berührung erforderlich</li>
+                    <li>Physische Berührung des Schlüssels innerhalb des Timeout-Fensters erforderlich</li>
+                    <li>Bestätigt physische Anwesenheit</li>
+                </ul>
+
+                <h3>Häufige Operationen</h3>
+                <ul style="text-align: left; margin: 0.5em auto; max-width: 90%;">
+                    <li>SSH-Login → Schlüssel einstecken + berühren</li>
+                    <li>Git Commit-Signierung → Schlüssel einstecken + berühren</li>
+                    <li>E-Mail-Entschlüsselung → Schlüssel einstecken + PIN + berühren</li>
+                </ul>
+
+            </section>
+            <section>
+
+                <h2>Best Practices</h2>
+
+                <p>🔑 <strong>Backup YubiKey kaufen</strong></p>
+                <ul style="text-align: left; margin: 0.5em auto; max-width: 90%;">
+                    <li>Gleiche Konfiguration wie primärer Schlüssel</li>
+                    <li>Sicher an anderem Ort aufbewahren</li>
+                </ul>
+
+                <p>📝 <strong>Widerrufszertifikat aufbewahren</strong></p>
+                <ul style="text-align: left; margin: 0.5em auto; max-width: 90%;">
+                    <li>Wird bei Schlüsselerstellung generiert</li>
+                    <li>An sicherem Ort aufbewahren</li>
+                </ul>
+
+                <p>🔒 <strong>PINs sichern</strong></p>
+                <ul style="text-align: left; margin: 0.5em auto; max-width: 90%;">
+                    <li>Starke, einzigartige PINs verwenden</li>
+                    <li>In Passwort-Manager speichern</li>
+                </ul>
+
+                <p>🛡️ <strong>Regelmäßige Tests</strong></p>
+                <ul style="text-align: left; margin: 0.5em auto; max-width: 90%;">
+                    <li>Backup-Schlüssel regelmäßig testen</li>
+                    <li>Zugriff auf kritische Konten verifizieren</li>
+                </ul>
+
+            </section>
+            <section>
+
+                <h2>Fehlerbehebung</h2>
+
+                <h3>YubiKey wird nicht erkannt</h3>
+
+                <pre><code class="bash">
+                # GPG-Agent neu starten
+                gpgconf --kill gpg-agent
+                
+                # USB-Verbindung prüfen
+                ykman list
+                
+                # Berechtigungen prüfen (Linux)
+                ls -la /dev | grep usb
+                </code></pre>
+
+            </section>
+            <section>
+
+                <h2>Fehlerbehebung</h2>
+
+                <h3>SSH funktioniert nicht</h3>
+
+                <pre><code class="bash">
+                # SSH_AUTH_SOCK überprüfen
+                echo $SSH_AUTH_SOCK
+                
+                # Prüfen ob GPG-Agent läuft
+                gpgconf --list-dirs agent-ssh-socket
+                
+                # Agent neu starten
+                gpgconf --kill gpg-agent
+                source ~/.bashrc  # oder ~/.zshrc
+                </code></pre>
+
+                <h3>PIN gesperrt</h3>
+
+                <p>Wenn PIN 3-mal falsch eingegeben wurde, mit Admin-PIN entsperren.</p>
+
+            </section>
+            <section>
+
+                <h2>Sicherheitsüberlegungen</h2>
+
+                <div style="background: rgba(255, 193, 7, 0.1); border-left: 4px solid #FFC107; padding: 0.8em 1em; margin: 0.5em 0; border-radius: 4px;">⚠️ <strong>Physische Sicherheit</strong></div>
+                <ul style="text-align: left; margin: 0.5em auto; max-width: 90%;">
+                    <li>YubiKey-Besitzer hat Zugriff auf alle Dienste</li>
+                    <li>PIN-Schutz immer verwenden</li>
+                    <li>Verlorene Geräte sofort melden</li>
+                </ul>
+
+                <div style="background: rgba(255, 193, 7, 0.1); border-left: 4px solid #FFC107; padding: 0.8em 1em; margin: 0.5em 0; border-radius: 4px;">⚠️ <strong>Backup-Strategie</strong></div>
+                <ul style="text-align: left; margin: 0.5em auto; max-width: 90%;">
+                    <li>Backup-YubiKey mit gleichen Schlüsseln aufbewahren</li>
+                    <li>Widerrufszertifikat sicher speichern</li>
+                    <li>Wiederherstellungsverfahren dokumentieren</li>
+                </ul>
+
+                <div style="background: rgba(255, 193, 7, 0.1); border-left: 4px solid #FFC107; padding: 0.8em 1em; margin: 0.5em 0; border-radius: 4px;">⚠️ <strong>Vertrauen aber verifizieren</strong></div>
+                <ul style="text-align: left; margin: 0.5em auto; max-width: 90%;">
+                    <li>Firmware-Authentizität überprüfen</li>
+                    <li>Nur bei autorisierten Händlern kaufen</li>
+                </ul>
+
+            </section>
+            <section>
+
+                <h2>Erweiterte Funktionen</h2>
+
+                <h3>FIDO2/U2F für Webseiten</h3>
+
+                <ul style="text-align: left; margin: 0.5em auto; max-width: 90%;">
+                    <li>Keine Einrichtung für die meisten Seiten erforderlich</li>
+                    <li>Registrierung bei: GitHub, Google, Facebook, Microsoft, etc.</li>
+                    <li>Einstellungen → Sicherheit → 2FA → Sicherheitsschlüssel</li>
+                    <li><strong>Microsoft</strong>: <a href="https://mysignins.microsoft.com/security-info" target="_blank" style="color: #1976D2; text-decoration: none; font-weight: 500;">mysignins.microsoft.com</a> → Sicherheitsinfo → Sicherheitsschlüssel (FIDO2/WebAuthn)</li>
+                </ul>
+
+                <h3>PIV/Smart Card</h3>
+
+                <ul style="text-align: left; margin: 0.5em auto; max-width: 90%;">
+                    <li>Für Windows-Login verwenden</li>
+                    <li>Unternehmens-VPN-Zugriff</li>
+                    <li>Zertifikatbasierte Authentifizierung</li>
+                </ul>
+
+                <h3>OATH-TOTP</h3>
+
+                <ul style="text-align: left; margin: 0.5em auto; max-width: 90%;">
+                    <li>TOTP-Secrets auf YubiKey speichern</li>
+                    <li>Ersetzt Authenticator-Apps</li>
+                </ul>
+
+            </section>
+            <section>
+
+                <h2>Ressourcen</h2>
+
+                <p>📚 <strong>Dokumentation</strong></p>
+                <ul style="text-align: left; margin: 0.5em auto; max-width: 90%;">
+                    <li><a href="https://github.com/drduh/YubiKey-Guide" target="_blank" style="color: #1976D2; text-decoration: none;">Dr. Duh's YubiKey Guide</a></li>
+                    <li><a href="https://docs.yubico.com/" target="_blank" style="color: #1976D2; text-decoration: none;">Yubico Dokumentation</a></li>
+                    <li><a href="https://gnupg.org/documentation/" target="_blank" style="color: #1976D2; text-decoration: none;">GnuPG Handbuch</a></li>
+                </ul>
+
+                <p>🛠️ <strong>Tools</strong></p>
+                <ul style="text-align: left; margin: 0.5em auto; max-width: 90%;">
+                    <li><a href="https://www.yubico.com/products/services-software/download/yubikey-manager/" target="_blank" style="color: #1976D2; text-decoration: none;">YubiKey Manager</a></li>
+                    <li><a href="https://gpgtools.org/" target="_blank" style="color: #1976D2; text-decoration: none;">GPG Suite (macOS)</a></li>
+                </ul>
+
+                <p>💬 <strong>Community</strong></p>
+                <ul style="text-align: left; margin: 0.5em auto; max-width: 90%;">
+                    <li>r/yubikey auf Reddit</li>
+                    <li>Yubico Forum</li>
+                </ul>
+
+            </section>
+            <section>
+
+                <h2>Schnellreferenz</h2>
+
+                <pre><code class="bash">
+                # Kartenstatus
+                gpg --card-status
+                
+                # PIN ändern
+                gpg --card-edit > passwd
+                
+                # Schlüssel auflisten
+                gpg --list-keys
+                
+                # Public Key exportieren
+                gpg --armor --export IHRE_EMAIL
+                
+                # YubiKey zurücksetzen (⚠️ DESTRUKTIV)
+                ykman openpgp reset
+                </code></pre>
+
+            </section>
+
+        </div>
+        
+        <!-- Footer -->
+        <div class="reveal-footer">
+            <div class="footer-left">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Die_Zeit-Logo-Bremen.svg/1920px-Die_Zeit-Logo-Bremen.svg.png" alt="DIE ZEIT">
+            </div>
+            <div class="footer-center">
+                Tobias Kabbeck
+            </div>
+            <div class="footer-right">
+                03.03.2026
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.0.4/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.0.4/plugin/highlight/highlight.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.0.4/plugin/notes/notes.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: true,
+            transition: 'slide',
+            slideNumber: false,
+            plugins: [ RevealHighlight, RevealNotes ]
+        });
+        
+        // Custom Slide-Nummer oben rechts
+        Reveal.on('slidechanged', event => {
+            const slideNumber = document.querySelector('.slide-number-top');
+            const current = event.indexh + 1;
+            const total = Reveal.getTotalSlides();
+            slideNumber.textContent = `${current}/${total}`;
+        });
+        
+        // Initial setzen
+        Reveal.on('ready', event => {
+            const slideNumber = document.querySelector('.slide-number-top');
+            const total = Reveal.getTotalSlides();
+            slideNumber.textContent = `1/${total}`;
+        });
+    </script>
+</body>
+</html>

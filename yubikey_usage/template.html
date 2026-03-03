@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YubiKey Leitfaden</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.0.4/dist/reset.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.0.4/dist/reveal.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.0.4/dist/theme/beige.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.0.4/plugin/highlight/zenburn.css">
+    <link rel="stylesheet" href="yubikey.css">
+</head>
+<body>
+    <div class="reveal">
+        <!-- Slide-Nummer oben rechts -->
+        <div class="slide-number-top"></div>
+        
+        <div class="slides">
+{{SLIDES}}
+        </div>
+        
+        <!-- Footer -->
+        <div class="reveal-footer">
+            <div class="footer-left">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Die_Zeit-Logo-Bremen.svg/1920px-Die_Zeit-Logo-Bremen.svg.png" alt="DIE ZEIT">
+            </div>
+            <div class="footer-center">
+                Tobias Kabbeck
+            </div>
+            <div class="footer-right">
+                03.03.2026
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.0.4/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.0.4/plugin/highlight/highlight.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.0.4/plugin/notes/notes.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: true,
+            transition: 'slide',
+            slideNumber: false,
+            plugins: [ RevealHighlight, RevealNotes ]
+        });
+        
+        // Custom Slide-Nummer oben rechts
+        Reveal.on('slidechanged', event => {
+            const slideNumber = document.querySelector('.slide-number-top');
+            const current = event.indexh + 1;
+            const total = Reveal.getTotalSlides();
+            slideNumber.textContent = `${current}/${total}`;
+        });
+        
+        // Initial setzen
+        Reveal.on('ready', event => {
+            const slideNumber = document.querySelector('.slide-number-top');
+            const total = Reveal.getTotalSlides();
+            slideNumber.textContent = `1/${total}`;
+        });
+    </script>
+</body>
+</html>
