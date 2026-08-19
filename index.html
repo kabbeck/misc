@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>misc — Vermischtes · Tobias Kabbeck</title>
+<meta name="description" content="Vermischtes von Tobias Kabbeck.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   Eine Szene, ganz in CSS: Sonne, Meer, Steg — und in der Mitte
+   ein Archivordner, aus dem zwei Karteikarten herausschauen.
+   Keine Bilddateien, alles Farbverläufe und Formen.
+
+   Ebenen von hinten nach vorn:
+     .sky  .sun  .sea  .deck        Hintergrund
+     .shelf (Bücher)  .clutter      Requisiten links/rechts
+     .folder > .card                Inhalt: die beiden Links
+   ============================================================ */
+
+:root {
+  /* Himmel und Sonne */
+  --sky-high: #6ec3e8;
+  --sky-low: #bfe6f4;
+  --haze: #ffe2a6;
+  --sun-core: #fffdf0;
+  --sun-edge: #ffd166;
+
+  /* Meer */
+  --sea-far: #3d93bd;
+  --sea-mid: #1f6f9b;
+  --sea-near: #12506f;
+  --foam: rgba(255, 255, 255, 0.7);
+
+  /* Steg und Requisiten */
+  --wood: #c39a6b;
+  --wood-dark: #9a7147;
+  --wood-seam: #7d5934;
+
+  /* Papier und Schrift */
+  --manila: #e6c179;
+  --manila-dark: #cfa457;
+  --paper: #fdf7e9;
+  --paper-edge: #e8dcc0;
+  --rule: #cadff0;
+  --ink: #2c2a25;
+  --ink-soft: #5f5a4e;
+  --ink-mute: #8a8375;
+  --stamp: #b8452e;
+  --thread: #2f6f8f;
+
+  --font-sans: "Inter", -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  /* Höhe des Stegs — die Bühne setzt ihre Requisiten darauf ab */
+  --deck-h: clamp(130px, 21vh, 210px);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100svh;
+  display: grid;
+  position: relative;
+  overflow-x: hidden;
+  font-family: var(--font-sans);
+  color: var(--ink);
+  background: linear-gradient(180deg, var(--sky-high) 0%, var(--sky-low) 38%, var(--haze) 52%);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---------- Sonne ------------------------------------------ */
+.sun {
+  position: fixed;
+  top: clamp(24px, 7vh, 90px);
+  left: 50%;
+  translate: -50% 0;
+  width: clamp(120px, 17vw, 220px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 45%, var(--sun-core) 38%, var(--sun-edge) 72%, rgba(255, 209, 102, 0) 73%);
+  box-shadow: 0 0 clamp(60px, 12vw, 160px) rgba(255, 214, 120, 0.75);
+  pointer-events: none;
+}
+
+.sun::before {
+  content: "";
+  position: absolute;
+  inset: -130%;
+  background: repeating-conic-gradient(
+    from 0deg,
+    rgba(255, 236, 175, 0.28) 0deg 3deg,
+    rgba(255, 236, 175, 0) 3deg 15deg
+  );
+  -webkit-mask-image: radial-gradient(circle, #000 12%, transparent 62%);
+  mask-image: radial-gradient(circle, #000 12%, transparent 62%);
+}
+
+/* ---------- Meer -------------------------------------------- */
+.sea {
+  position: fixed;
+  inset: auto 0 0 0;
+  height: 46vh;
+  background:
+    linear-gradient(180deg, var(--sea-far) 0%, var(--sea-mid) 45%, var(--sea-near) 100%);
+  pointer-events: none;
+}
+
+/* Horizontlinie mit Gischt */
+.sea::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--foam) 20%, var(--foam) 80%, transparent);
+  opacity: 0.7;
+}
+
+/* Wellenstriche: nah am Horizont dicht und fein, nach vorn hin weiter */
+.sea::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(180deg, rgba(255, 255, 255, 0.1) 0 1px, transparent 1px 9px),
+    repeating-linear-gradient(180deg, transparent 0 40px, rgba(255, 255, 255, 0.09) 40px 42px);
+  -webkit-mask-image: linear-gradient(180deg, #000 0%, rgba(0, 0, 0, 0.45) 45%, transparent 90%);
+  mask-image: linear-gradient(180deg, #000 0%, rgba(0, 0, 0, 0.45) 45%, transparent 90%);
+}
+
+/* Sonnenglitzern auf dem Wasser */
+.glitter {
+  position: fixed;
+  left: 50%;
+  translate: -50% 0;
+  bottom: 0;
+  width: clamp(180px, 26vw, 380px);
+  height: 46vh;
+  background: repeating-linear-gradient(
+    180deg,
+    rgba(255, 246, 214, 0.85) 0 3px,
+    rgba(255, 246, 214, 0) 3px 16px
+  );
+  -webkit-mask-image: radial-gradient(ellipse 60% 75% at 50% 0%, #000, transparent 75%);
+  mask-image: radial-gradient(ellipse 60% 75% at 50% 0%, #000, transparent 75%);
+  opacity: 0.65;
+  pointer-events: none;
+}
+
+/* Segelboot am Horizont */
+.boat {
+  position: fixed;
+  bottom: calc(46vh - 26px);
+  left: 16%;
+  width: 44px;
+  height: 30px;
+  pointer-events: none;
+}
+
+.boat::before {
+  content: "";
+  position: absolute;
+  bottom: 6px;
+  left: 12px;
+  border-left: 2px solid rgba(255, 255, 255, 0.9);
+  border-bottom: 18px solid transparent;
+  border-right: 16px solid rgba(255, 255, 255, 0.9);
+}
+
+.boat::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 4px;
+  width: 34px;
+  height: 7px;
+  border-radius: 0 0 8px 8px;
+  background: rgba(40, 60, 74, 0.85);
+}
+
+/* Möwen */
+.gull {
+  position: fixed;
+  width: 26px;
+  height: 10px;
+  opacity: 0.75;
+  pointer-events: none;
+}
+
+.gull::before,
+.gull::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  width: 13px;
+  height: 9px;
+  border-top: 2px solid #40566a;
+  border-radius: 50% 50% 0 0;
+}
+
+.gull::before { left: 0; rotate: -12deg; }
+.gull::after { right: 0; rotate: 12deg; }
+
+.gull--a { top: 18vh; left: 22%; }
+.gull--b { top: 24vh; left: 28%; scale: 0.7; }
+.gull--c { top: 15vh; right: 24%; scale: 0.85; }
+
+/* ---------- Steg (Vordergrund) ------------------------------- */
+.deck {
+  position: fixed;
+  inset: auto 0 0 0;
+  height: var(--deck-h);
+  background:
+    repeating-linear-gradient(
+      90deg,
+      var(--wood) 0 58px,
+      var(--wood-seam) 58px 62px
+    ),
+    var(--wood);
+  border-top: 6px solid var(--wood-dark);
+  box-shadow: 0 -18px 40px rgba(12, 40, 56, 0.35);
+  pointer-events: none;
+}
+
+.deck::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(255, 240, 200, 0.35), rgba(60, 35, 15, 0.25));
+}
+
+/* ---------- Bühne -------------------------------------------- */
+.stage {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: clamp(12px, 3vw, 44px);
+  /* unten so viel Platz, dass alle Requisiten auf den Planken aufsetzen */
+  padding: clamp(96px, 20vh, 220px) clamp(16px, 4vw, 48px) calc(var(--deck-h) - 18px);
+}
+
+/* Kontaktschatten auf den Planken */
+.books::after,
+.folder::after,
+.clutter::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -12px;
+  translate: -50% 0;
+  width: 92%;
+  height: 22px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(20, 45, 25, 0.4), transparent 70%);
+  z-index: -1;
+}
+
+.books { position: relative; }
+
+/* ---------- Bücherstapel (links) ------------------------------ */
+.books {
+  display: flex;
+  align-items: flex-end;
+  gap: 5px;
+  padding-bottom: 4px;
+  filter: drop-shadow(0 10px 14px rgba(12, 40, 56, 0.4));
+}
+
+.book {
+  width: clamp(18px, 2.2vw, 26px);
+  border-radius: 3px 3px 2px 2px;
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.22), transparent 34%, rgba(255, 255, 255, 0.22) 62%, rgba(0, 0, 0, 0.14));
+  background-color: var(--spine);
+  box-shadow: inset 0 -6px 0 rgba(0, 0, 0, 0.18);
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  color: rgba(255, 255, 255, 0.85);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-align: center;
+  padding: 8px 0;
+}
+
+.book--1 { --spine: #2f6f8f; height: clamp(120px, 17vh, 180px); }
+.book--2 { --spine: #b8452e; height: clamp(140px, 20vh, 205px); }
+.book--3 { --spine: #4d7c52; height: clamp(108px, 15vh, 160px); rotate: 2deg; }
+.book--4 { --spine: #6b5b93; height: clamp(130px, 18vh, 190px); }
+
+/* Liegendes Buch als Sockel */
+.book--flat {
+  width: clamp(90px, 11vw, 130px);
+  height: 16px;
+  writing-mode: horizontal-tb;
+  background: linear-gradient(180deg, #d8cbb0, #b9a888 40%, #8d7a5c);
+  border-radius: 3px;
+  align-self: flex-end;
+  padding: 0;
+}
+
+/* ---------- Ordner mit den Karten (Mitte) --------------------- */
+.folder {
+  position: relative;
+  padding: clamp(26px, 3.5vw, 40px) clamp(18px, 2.6vw, 32px) clamp(22px, 3vw, 34px);
+  border-radius: 4px 14px 6px 6px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.35), rgba(0, 0, 0, 0.06)),
+    var(--manila);
+  box-shadow:
+    0 2px 0 var(--manila-dark),
+    0 26px 50px rgba(10, 38, 54, 0.45);
+  rotate: -0.6deg;
+}
+
+/* Reiter mit dem Titel */
+.folder__tab {
+  position: absolute;
+  top: clamp(-30px, -3.4vw, -22px);
+  left: clamp(18px, 3vw, 40px);
+  margin: 0;
+  padding: 6px clamp(14px, 2vw, 22px) 10px;
+  border-radius: 8px 8px 0 0;
+  background: var(--manila);
+  box-shadow: 0 -3px 0 rgba(255, 255, 255, 0.35) inset;
+  font-size: clamp(17px, 2.4vw, 24px);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: #6a4a18;
+}
+
+/* Gestempelter Pfad unten rechts auf dem Ordner */
+.folder__stamp {
+  position: absolute;
+  bottom: clamp(6px, 1vw, 10px);
+  right: clamp(14px, 2vw, 26px);
+  padding: 3px 8px;
+  border: 2px solid var(--stamp);
+  border-radius: 4px;
+  color: var(--stamp);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0.75;
+  rotate: -4deg;
+}
+
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: clamp(14px, 2vw, 26px);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* ---------- Karteikarte = Link -------------------------------- */
+.card {
+  position: relative;
+  display: block;
+  width: clamp(230px, 27vw, 300px);
+  padding: 30px 22px 20px;
+  border-radius: 3px;
+  color: inherit;
+  text-decoration: none;
+  background:
+    linear-gradient(180deg, transparent 52px, var(--rule) 52px 53px, transparent 53px),
+    repeating-linear-gradient(180deg, transparent 0 25px, rgba(160, 190, 215, 0.35) 25px 26px),
+    var(--paper);
+  border: 1px solid var(--paper-edge);
+  box-shadow: 0 10px 22px rgba(10, 38, 54, 0.28);
+  transition: transform 0.18s ease, box-shadow 0.18s ease, rotate 0.18s ease;
+}
+
+.card--1 { rotate: -1.6deg; }
+.card--2 { rotate: 1.4deg; }
+
+/* Roter Kopfstrich der Karteikarte */
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 20px 0 auto 0;
+  height: 2px;
+  background: rgba(184, 69, 46, 0.5);
+}
+
+/* Reißzwecke */
+.card::after {
+  content: "";
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  translate: -50% 0;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #ff9b8a, var(--stamp) 70%);
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.35);
+}
+
+.card:hover,
+.card:focus-visible {
+  transform: translateY(-8px);
+  rotate: 0deg;
+  box-shadow: 0 20px 34px rgba(10, 38, 54, 0.38);
+}
+
+.card:focus-visible { outline: 3px solid var(--thread); outline-offset: 4px; }
+
+.card__title {
+  display: block;
+  font-size: clamp(18px, 2.2vw, 22px);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+
+.card__desc {
+  display: block;
+  margin-top: 10px;
+  font-size: 14px;
+  line-height: 26px; /* auf das Linienraster gesetzt */
+  color: var(--ink-soft);
+}
+
+.card__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 14px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+
+.card__go { color: var(--thread); font-weight: 700; }
+
+/* ---------- Notizen und Kram (rechts) -------------------------- */
+.clutter {
+  position: relative;
+  width: clamp(96px, 12vw, 150px);
+  height: clamp(110px, 16vh, 170px);
+  filter: drop-shadow(0 10px 14px rgba(12, 40, 56, 0.35));
+}
+
+.sticky,
+.sheet {
+  position: absolute;
+  border-radius: 2px;
+}
+
+.sheet {
+  inset: auto 0 0 0;
+  height: clamp(70px, 9vh, 96px);
+  background: linear-gradient(180deg, #fffdf6, #efe7d2);
+  border: 1px solid var(--paper-edge);
+}
+
+.sheet--a { rotate: -5deg; }
+.sheet--b { rotate: 3deg; }
+.sheet--c {
+  rotate: -1deg;
+  background:
+    repeating-linear-gradient(180deg, transparent 0 13px, rgba(150, 170, 190, 0.4) 13px 14px),
+    #fffdf6;
+}
+
+.sticky {
+  bottom: clamp(48px, 7vh, 74px);
+  left: 12px;
+  width: clamp(62px, 7vw, 82px);
+  aspect-ratio: 1;
+  background: linear-gradient(160deg, #ffe27a, #f5c948);
+  rotate: 6deg;
+  box-shadow: 0 6px 10px rgba(12, 40, 56, 0.3);
+}
+
+.sticky::after {
+  content: "";
+  position: absolute;
+  inset: 14px 12px auto 12px;
+  height: 26px;
+  background: repeating-linear-gradient(180deg, rgba(120, 95, 20, 0.45) 0 2px, transparent 2px 9px);
+}
+
+/* Büroklammer */
+.clip {
+  position: absolute;
+  bottom: clamp(58px, 8vh, 84px);
+  right: 14px;
+  width: 16px;
+  height: 34px;
+  border: 3px solid #9aa7b1;
+  border-radius: 10px;
+  rotate: 16deg;
+}
+
+.clip::after {
+  content: "";
+  position: absolute;
+  inset: 6px 3px 10px 3px;
+  border: 3px solid #9aa7b1;
+  border-top: none;
+  border-radius: 0 0 8px 8px;
+}
+
+/* ---------- Fußzeile ------------------------------------------ */
+/* liegt flach auf den Planken, nimmt der Bühne keine Höhe weg */
+.foot {
+  position: fixed;
+  inset: auto 0 0 0;
+  z-index: 3;
+  padding: 0 clamp(16px, 4vw, 40px) clamp(14px, 2.4vh, 26px);
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  color: #f6ead2;
+  text-shadow: 0 1px 2px rgba(20, 45, 25, 0.5);
+}
+
+.foot a { color: #fff8e6; text-underline-offset: 3px; }
+
+/* ---------- Bewegung ------------------------------------------- */
+@media (prefers-reduced-motion: no-preference) {
+  .sun::before { animation: turn 180s linear infinite; }
+  .glitter { animation: shimmer 7s ease-in-out infinite alternate; }
+  .boat { animation: sail 90s linear infinite; }
+  .gull { animation: drift 14s ease-in-out infinite alternate; }
+  .gull--b { animation-duration: 18s; }
+  .gull--c { animation-duration: 11s; }
+}
+
+@keyframes turn { to { rotate: 360deg; } }
+@keyframes shimmer { from { opacity: 0.45; } to { opacity: 0.8; } }
+@keyframes sail { from { left: 8%; } to { left: 78%; } }
+@keyframes drift { from { translate: 0 0; } to { translate: 26px -12px; } }
+
+/* ---------- Schmale Bildschirme -------------------------------- */
+/* Erst die Requisiten räumen, damit der Ordner die Breite bekommt … */
+@media (max-width: 1040px) {
+  .books,
+  .clutter,
+  .gull--b { display: none; }
+}
+
+/* … dann die Karten untereinander, der Ordner schrumpft mit. */
+@media (max-width: 760px) {
+  .stage { padding-top: clamp(72px, 22vh, 180px); }
+  .cards { flex-direction: column; align-items: center; }
+  /* feste Breite statt Prozent: so richtet sich der Ordner nach den Karten */
+  .card { width: min(330px, 74vw); }
+  /* Platz, damit der Stempel nicht unter die untere Karte rutscht */
+  .folder { padding-bottom: 46px; }
+  .sea { height: 52vh; }
+}
+</style>
+</head>
+<body>
+
+<!-- Hintergrund -->
+<div class="sun" aria-hidden="true"></div>
+<div class="sea" aria-hidden="true"></div>
+<div class="glitter" aria-hidden="true"></div>
+<div class="boat" aria-hidden="true"></div>
+<div class="gull gull--a" aria-hidden="true"></div>
+<div class="gull gull--b" aria-hidden="true"></div>
+<div class="gull gull--c" aria-hidden="true"></div>
+<div class="deck" aria-hidden="true"></div>
+
+<!-- Bühne -->
+<main class="stage">
+
+  <div class="books" aria-hidden="true">
+    <div class="book book--1">Notizen</div>
+    <div class="book book--2">Archiv</div>
+    <div class="book book--3">Fundus</div>
+    <div class="book book--4">Kladde</div>
+    <div class="book book--flat"></div>
+  </div>
+
+  <div class="folder">
+    <h1 class="folder__tab">Vermischtes</h1>
+    <span class="folder__stamp" aria-hidden="true">kabbeck / misc</span>
+
+    <ul class="cards">
+      <li>
+        <a class="card card--1" href="ai_coding_summit/">
+          <span class="card__title">AI Coding Summit London</span>
+          <span class="card__desc">
+            17 Talks, zwei Tage: Skills, Orchestrierung, Verifikation — und was
+            davon für unsere Arbeit gilt.
+          </span>
+          <span class="card__foot">
+            <span>Juli 2026</span>
+            <span class="card__go">öffnen →</span>
+          </span>
+        </a>
+      </li>
+      <li>
+        <a class="card card--2" href="yubikey_usage/">
+          <span class="card__title">YubiKey Leitfaden</span>
+          <span class="card__desc">
+            GPG-Schlüssel, SSH über GPG, Commit-Signierung, TOTP und FIDO2
+            im Alltag.
+          </span>
+          <span class="card__foot">
+            <span>03.03.2026</span>
+            <span class="card__go">öffnen →</span>
+          </span>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="clutter" aria-hidden="true">
+    <div class="sheet sheet--a"></div>
+    <div class="sheet sheet--b"></div>
+    <div class="sheet sheet--c"></div>
+    <div class="sticky"></div>
+    <div class="clip"></div>
+  </div>
+
+</main>
+
+<footer class="foot">
+  <a href="https://github.com/kabbeck/misc">github.com/kabbeck/misc</a>
+</footer>
+
+</body>
+</html>
