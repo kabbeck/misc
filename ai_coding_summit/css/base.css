@@ -1,0 +1,180 @@
+/* ============================================================
+   base.css — Eigenes Theme statt Reveal-Theme.
+   Nur Element-Ebene: Typografie, Listen, Tabellen, Code, Links.
+   Kein !important, keine Layout-Entscheidungen.
+   ============================================================ */
+
+/* --- Reveal-Grundflächen ------------------------------------ */
+.reveal *,
+.reveal *::before,
+.reveal *::after {
+  box-sizing: border-box;
+}
+
+.reveal-viewport {
+  background: var(--bg);
+  transition: background-color 0.3s ease;
+}
+
+.reveal {
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  font-weight: 400;
+  line-height: var(--lh-body);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+.reveal .slides {
+  text-align: left;
+}
+
+/* --- Überschriften ------------------------------------------ */
+.reveal h1,
+.reveal h2,
+.reveal h3,
+.reveal h4 {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-weight: 700;
+  line-height: var(--lh-tight);
+  letter-spacing: var(--tracking-tight);
+  color: var(--ink);
+  text-transform: none;
+  text-shadow: none;
+}
+
+.reveal h1 { font-size: var(--fs-h1); }
+.reveal h2 { font-size: var(--fs-h2); }
+.reveal h3 { font-size: var(--fs-h3); font-weight: 600; }
+.reveal h4 {
+  font-size: var(--fs-small);
+  font-weight: 600;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+
+/* --- Fließtext ---------------------------------------------- */
+.reveal p {
+  margin: 0;
+  max-width: 26em;
+}
+
+.reveal strong { font-weight: 600; }
+.reveal em { font-style: italic; color: var(--ink-soft); }
+
+.reveal a {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 2px solid var(--accent-tint);
+  transition: border-color 0.15s ease;
+}
+.reveal a:hover { border-bottom-color: var(--accent); }
+
+/* --- Listen -------------------------------------------------- */
+.reveal ul,
+.reveal ol {
+  margin: 0;
+  padding-left: 1.1em;
+  max-width: 26em;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+.reveal li { line-height: var(--lh-snug); }
+.reveal li::marker { color: var(--ink-mute); }
+.reveal li > ul,
+.reveal li > ol {
+  margin-top: var(--sp-3);
+  font-size: 0.85em;
+  color: var(--ink-soft);
+}
+
+/* --- Code ---------------------------------------------------- */
+.reveal code {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  background: var(--surface-sunken);
+  border-radius: var(--radius-sm);
+  padding: 0.1em 0.35em;
+}
+
+.reveal pre {
+  margin: 0;
+  width: 100%;
+  box-shadow: none;
+  font-size: var(--fs-code);
+}
+
+.reveal pre code {
+  display: block;
+  padding: var(--sp-5) var(--sp-6);
+  background: var(--code-bg);
+  color: var(--code-ink);
+  border-radius: var(--radius);
+  font-size: 1em;
+  line-height: 1.5;
+  max-height: none;
+  overflow: auto;
+  tab-size: 2;
+}
+
+/* Syntax-Farben passend zu den Tokens (Reveal-Highlight-Plugin) */
+.hljs-comment, .hljs-meta { color: var(--code-mute); font-style: italic; }
+.hljs-keyword, .hljs-selector-tag, .hljs-built_in { color: var(--code-key); }
+.hljs-string, .hljs-attr, .hljs-addition { color: var(--code-str); }
+.hljs-number, .hljs-literal, .hljs-variable { color: var(--code-num); }
+.hljs-title, .hljs-function, .hljs-name { color: var(--code-fn); }
+
+.reveal kbd {
+  font-family: var(--font-mono);
+  font-size: 0.8em;
+  padding: 0.15em 0.5em;
+  border: 1px solid var(--line-strong);
+  border-bottom-width: 3px;
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+}
+
+/* --- Tabellen ------------------------------------------------- */
+.reveal table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--fs-small);
+}
+
+.reveal th,
+.reveal td {
+  padding: var(--sp-3) var(--sp-4);
+  border-bottom: var(--border);
+}
+
+.reveal th {
+  font-size: var(--fs-micro);
+  font-weight: 600;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  border-bottom: 2px solid var(--line-strong);
+}
+
+.reveal tbody tr:last-child td { border-bottom: none; }
+
+.ta-left { text-align: left; }
+.ta-center { text-align: center; }
+.ta-right { text-align: right; }
+
+/* --- Bilder --------------------------------------------------- */
+.reveal img {
+  max-width: 100%;
+  border: none;
+  background: none;
+  box-shadow: none;
+  border-radius: var(--radius-sm);
+}
+
+/* --- Reveal-Bedienelemente ------------------------------------ */
+.reveal .controls { color: var(--ink-mute); }
+.reveal .progress { height: 4px; color: var(--accent); background: var(--line); }

@@ -1,0 +1,365 @@
+/* ============================================================
+   components.css — Bausteine aus slides.md (':::'-Blöcke).
+   Ein Block = eine Klasse + optionale Modifier (BEM-nah).
+   Jeder Baustein ist eigenständig und ortsunabhängig.
+   ============================================================ */
+
+/* --- grid: Spaltenraster ------------------------------------- */
+.grid {
+  display: grid;
+  gap: var(--sp-5);
+  align-items: stretch;
+  width: 100%;
+}
+
+.grid--2 { grid-template-columns: repeat(2, 1fr); }
+.grid--3 { grid-template-columns: repeat(3, 1fr); }
+.grid--4 { grid-template-columns: repeat(4, 1fr); }
+.grid--1-2 { grid-template-columns: 1fr 2fr; }
+.grid--2-1 { grid-template-columns: 2fr 1fr; }
+
+/* --- flow: Kette mit Pfeilen zwischen den Elementen ----------- */
+.flow {
+  display: flex;
+  align-items: stretch;
+  gap: var(--sp-5);
+  width: 100%;
+}
+
+.flow > * { flex: 1; }
+
+.flow > * + *::before {
+  content: "→";
+  position: absolute;
+  left: calc(var(--sp-5) * -1);
+  top: 50%;
+  translate: -50% -50%;
+  font-size: var(--fs-h3);
+  color: var(--ink-mute);
+}
+
+.flow > * + * { position: relative; }
+
+/* --- card: Kachel mit Icon + Titel --------------------------- */
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  padding: var(--sp-5) var(--sp-5) var(--sp-6);
+  border: var(--border);
+  border-top: 4px solid var(--card-accent, var(--line-strong));
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+.card__icon { font-size: var(--fs-h3); line-height: 1; }
+
+.card__title {
+  font-size: var(--fs-h3);
+  color: var(--card-accent, var(--ink));
+}
+
+.card__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  font-size: var(--fs-small);
+  color: var(--ink-soft);
+}
+
+.card__body p,
+.card__body ul,
+.card__body ol { max-width: none; }
+
+.card--accent { --card-accent: var(--accent); background: var(--accent-tint); }
+.card--green  { --card-accent: var(--green);  background: var(--green-tint); }
+.card--amber  { --card-accent: var(--amber);  background: var(--amber-tint); }
+.card--red    { --card-accent: var(--red);    background: var(--red-tint); }
+.card--violet { --card-accent: var(--violet); background: var(--violet-tint); }
+.card--dark {
+  --card-accent: var(--surface);
+  background: var(--ink);
+  color: var(--ink-invert);
+}
+.card--dark .card__body { color: #b6c0cc; }
+
+/* --- pane: neutraler Container für freie Inhalte ------------- */
+.pane {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+  min-width: 0;
+}
+
+.pane--boxed {
+  padding: var(--sp-5);
+  border: var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.pane--sunken {
+  padding: var(--sp-5);
+  border-radius: var(--radius);
+  background: var(--surface-sunken);
+}
+
+.pane p, .pane ul, .pane ol { max-width: none; }
+
+/* Code in Spalten etwas kleiner, damit Zeilen nicht umbrechen */
+.grid pre,
+.flow pre { font-size: var(--fs-small); }
+
+/* --- callout: Hinweisbox ------------------------------------- */
+.callout {
+  display: flex;
+  gap: var(--sp-4);
+  padding: var(--sp-4) var(--sp-5);
+  border-left: 5px solid var(--callout-accent);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  background: var(--callout-tint);
+  font-size: var(--fs-small);
+  color: var(--ink-soft);
+}
+
+.callout--note   { --callout-accent: var(--accent); --callout-tint: var(--accent-tint); }
+.callout--tip    { --callout-accent: var(--green);  --callout-tint: var(--green-tint); }
+.callout--warn   { --callout-accent: var(--amber);  --callout-tint: var(--amber-tint); }
+.callout--danger { --callout-accent: var(--red);    --callout-tint: var(--red-tint); }
+
+.callout__icon { font-size: var(--fs-h3); line-height: 1.2; }
+
+.callout__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.callout__body p,
+.callout__body ul { max-width: none; }
+
+.callout__title {
+  font-weight: 600;
+  color: var(--callout-accent);
+}
+
+/* --- steps: nummerierte Abfolge ------------------------------ */
+.steps {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  max-width: none;
+  counter-reset: step;
+}
+
+.step {
+  display: flex;
+  align-items: baseline;
+  gap: var(--sp-4);
+}
+
+.step__num {
+  flex: none;
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: var(--fs-small);
+  font-weight: 700;
+  translate: 0 6px;
+}
+
+.step__text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+  font-size: var(--fs-body);
+}
+
+.step__text span {
+  font-size: var(--fs-small);
+  color: var(--ink-mute);
+}
+
+/* --- stats: Kennzahlenreihe ---------------------------------- */
+.stats {
+  display: flex;
+  gap: var(--sp-6);
+  width: 100%;
+}
+
+.stat {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  padding: var(--sp-5) 0;
+  border-top: 4px solid var(--accent);
+}
+
+.stat__value {
+  font-size: var(--fs-h1);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: var(--tracking-tight);
+  font-variant-numeric: tabular-nums;
+}
+
+.stat__label {
+  font-size: var(--fs-small);
+  color: var(--ink-mute);
+  max-width: 12em;
+}
+
+/* --- links: Verweise auf die eigentliche Arbeit eines Talks ----
+   '.slide .link' statt '.link': reveal.css setzt über '.reveal a'
+   eigene Rahmen und würde eine einklassige Regel überstimmen. */
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-4);
+  width: 100%;
+}
+
+.slide .link {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: var(--sp-3) var(--sp-5);
+  border: 0;
+  border-left: 4px solid var(--accent);
+  border-radius: var(--radius-sm);
+  background: var(--surface-sunken);
+  text-decoration: none;
+}
+
+.slide .link__label {
+  font-size: var(--fs-micro);
+  font-weight: 600;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.slide .link__url {
+  font-family: var(--font-mono);
+  font-size: var(--fs-small);
+  color: var(--accent);
+}
+
+.slide .link__url::after {
+  content: " ↗";
+  color: var(--ink-mute);
+}
+
+.slide .link:hover .link__url { text-decoration: underline; }
+
+/* --- quote --------------------------------------------------- */
+.quote {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+  margin: 0;
+  padding-left: var(--sp-6);
+  border-left: 5px solid var(--accent);
+}
+
+.quote p,
+.quote blockquote {
+  font-size: var(--fs-lead);
+  line-height: var(--lh-snug);
+  color: var(--ink);
+  max-width: 20em;
+}
+
+.quote blockquote { margin: 0; }
+
+.quote__cite {
+  font-size: var(--fs-small);
+  font-style: normal;
+  color: var(--ink-mute);
+}
+
+/* --- source: Quellenzeile der Folie ('@talk:' in slides.md) ---
+   Liegt außerhalb des Flex-Flusses, damit sie das Layout nicht
+   verschiebt — unten links, auf Höhe der Fußzeile.
+   '.slide .source' statt '.source': reveal.css setzt über '.reveal a'
+   position und Rahmen und würde eine einklassige Regel überstimmen. */
+.slide .source {
+  position: absolute;
+  left: var(--slide-pad-x);
+  right: var(--slide-pad-x);
+  bottom: var(--sp-6);
+  display: flex;
+  align-items: center;
+  gap: var(--sp-4);
+  color: var(--ink-mute);
+  text-decoration: none;
+  border: none;
+}
+
+.slide .source__photo {
+  flex: none;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: var(--surface-sunken);
+  box-shadow: 0 0 0 2px var(--surface), 0 0 0 3px var(--line);
+}
+
+.slide .source__text {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+
+.slide .source__name {
+  font-size: var(--fs-micro);
+  font-weight: 600;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.slide .source__talk {
+  font-size: var(--fs-small);
+  color: var(--accent);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.slide .source__talk::after {
+  content: " ↗";
+  color: var(--ink-mute);
+}
+
+.slide .source:hover .source__talk { text-decoration: underline; }
+
+/* Platz für die Quellenzeile freihalten */
+.slide.has-source .slide__inner { padding-bottom: 142px; }
+
+/* --- figure -------------------------------------------------- */
+.figure {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  margin: 0;
+}
+
+.figure img { width: 100%; }
+
+.figure figcaption {
+  font-size: var(--fs-micro);
+  color: var(--ink-mute);
+}

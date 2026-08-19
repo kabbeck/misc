@@ -1,0 +1,86 @@
+/* ============================================================
+   tokens.css — Design-Tokens. Einzige Stelle für Farbe,
+   Typo-Skala, Abstände, Radien. Nichts hier selektiert Elemente.
+   Alle px-Werte beziehen sich auf die Bühne 1600 x 900.
+   ============================================================ */
+
+:root {
+  /* --- Bühne ------------------------------------------------ */
+  --stage-w: 1600px;
+  --stage-h: 900px;
+  --slide-pad-x: 96px;
+  --slide-pad-y: 72px;
+
+  /* --- Farbe: Grundflächen ---------------------------------- */
+  --bg: #fbfaf8;
+  --surface: #ffffff;
+  --surface-sunken: #f3f4f6;
+  --line: #e3e6ea;
+  --line-strong: #cbd2d9;
+
+  /* --- Farbe: Text ------------------------------------------ */
+  --ink: #10151b;
+  --ink-soft: #414c58;
+  --ink-mute: #78838f;
+  --ink-invert: #f2f5f8;
+
+  /* --- Farbe: Akzent + semantische Töne ---------------------- */
+  --accent: #1f4ed8;
+  --accent-ink: #14349a;
+  --accent-tint: #eaf0ff;
+
+  --green: #0f7a52;
+  --green-tint: #e6f4ee;
+  --amber: #a2650a;
+  --amber-tint: #fdf3de;
+  --red: #b3261e;
+  --red-tint: #fbe9e7;
+  --violet: #5b3fbe;
+  --violet-tint: #efeaff;
+
+  /* --- Farbe: Code ------------------------------------------ */
+  --code-bg: #121821;
+  --code-ink: #e6edf3;
+  --code-mute: #8b98a5;
+  --code-key: #86b7ff;
+  --code-str: #9ae6b4;
+  --code-num: #f6c177;
+  --code-fn: #d6bcfa;
+
+  /* --- Typografie ------------------------------------------- */
+  --font-sans: "Inter", -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  --fs-hero: 88px;
+  --fs-h1: 62px;
+  --fs-h2: 46px;
+  --fs-h3: 30px;
+  --fs-lead: 34px;
+  --fs-body: 28px;
+  --fs-small: 22px;
+  --fs-micro: 18px;
+  --fs-code: 24px;
+
+  --lh-tight: 1.15;
+  --lh-snug: 1.35;
+  --lh-body: 1.55;
+
+  --tracking-tight: -0.02em;
+  --tracking-wide: 0.08em;
+
+  /* --- Abstände (4er-Raster) --------------------------------- */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 24px;
+  --sp-6: 32px;
+  --sp-7: 48px;
+  --sp-8: 64px;
+
+  /* --- Form ------------------------------------------------- */
+  --radius: 14px;
+  --radius-sm: 8px;
+  --border: 1px solid var(--line);
+  --shadow: 0 1px 2px rgba(16, 21, 27, 0.05), 0 8px 24px rgba(16, 21, 27, 0.05);
+}

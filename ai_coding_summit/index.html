@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Coding Summit London — Was 17 Talks für unsere Arbeit bedeuten</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <!-- Reveal.js: nur Reset + Layout-Engine, kein Theme (Theme = eigene CSS-Ebenen).
+       Version bewusst gepinnt — ein Vortrag soll nicht durch ein CDN-Update kippen. -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@6.0.1/dist/reset.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@6.0.1/dist/reveal.css">
+
+  <!-- Eigene CSS-Ebenen: Tokens -> Basis -> Layouts -> Komponenten -->
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layouts.css">
+  <link rel="stylesheet" href="css/components.css">
+
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+<section class="slide slide--title">
+<div class="slide__inner">
+<img class="mark" src="assets/summit-bolt.png" alt="AI Coding Summit">
+<h1>AI Coding Summit London</h1>
+<h2>See how AI transforms software development</h2>
+<p>Tobias Kabbeck · 6.–7. Juli 2026 · London, UK & Online</p>
+</div>
+</section>
+
+<section class="slide slide--default">
+<div class="slide__inner">
+<h2>Inhalt</h2>
+<ol class="steps"><li class="step"><span class="step__num">1</span><span class="step__text"><b>Einstieg</b><span>die Größenordnung: das ist kein Experiment mehr</span></span></li><li class="step"><span class="step__num">2</span><span class="step__text"><b>Stand der Technik</b><span>drei Stufen und was den Schwarm kollabieren lässt</span></span></li><li class="step"><span class="step__num">3</span><span class="step__text"><b>Skills</b><span>wiederverwendbare Anleitungen und ihre Grenzen</span></span></li><li class="step"><span class="step__num">4</span><span class="step__text"><b>Orchestrierung</b><span>wie das bei 527 Repos aussieht</span></span></li><li class="step"><span class="step__num">5</span><span class="step__text"><b>Verifikation</b><span>wer prüft, und warum grüne Checks nicht genügen</span></span></li><li class="step"><span class="step__num">6</span><span class="step__text"><b>Die dunkle Seite</b><span>Vergiftung und Drift</span></span></li><li class="step"><span class="step__num">7</span><span class="step__text"><b>Schluss</b><span>vier Beobachtungen, die sich durch alle Talks ziehen</span></span></li></ol>
+</div>
+</section>
+
+<section class="slide slide--section">
+<div class="slide__inner">
+<h4>Teil 1</h4>
+<h2>Einstieg</h2>
+<p>Code schreiben ist billig geworden. Vertrauen nicht.</p>
+</div>
+</section>
+
+<section class="slide slide--default wide has-source">
+<div class="slide__inner">
+<h4>Jodan Alberts hat auf öffentlichem GitHub den Trailer <code>Co-Authored-By: Claude</code> ausgezählt</h4>
+<h2>45 Millionen Commits. Interessant sind 8 Millionen davon.</h2>
+<div class="stats"><div class="stat"><span class="stat__value">45 Mio.</span><span class="stat__label">signierte Commits seit Februar 2025, in 2,4 Mio. Repositories</span></div><div class="stat"><span class="stat__value">8 Mio.</span><span class="stat__label">davon in Repos mit mindestens zwei Sternen</span></div><div class="stat"><span class="stat__value">400.000</span><span class="stat__label">neue signierte Commits pro Tag</span></div></div>
+<div class="callout callout--warn"><span class="callout__icon">⚠️</span><div class="callout__body"><b class="callout__title">Warum die Sternzahl hier die eigentliche Kennzahl ist</b><p>Zwei Sterne heißt: mindestens ein anderer Mensch hat das Repo nützlich gefunden. Anfangs lagen über 90 % aller Claude-Commits unter dieser Schwelle — Lern- und Wegwerfprojekte. Der Anteil sinkt. Die Gesamtmenge ist also kein Beleg. Die 8 Millionen sind einer.</p></div></div>
+<div class="links"><a class="link" href="https://www.claudescode.dev" target="_blank" rel="noopener"><span class="link__label">Alberts' Dashboard — läuft weiter, Zahlen live</span><span class="link__url">claudescode.dev</span></a></div>
+</div>
+<a class="source" href="https://gitnation.com/contents/what-is-claude-coding" target="_blank" rel="noopener"><img class="source__photo" src="assets/speakers/alberts.jpg" alt="Jodan Alberts"><span class="source__text"><span class="source__name">Jodan Alberts · advance.io</span><span class="source__talk">What Claude Stats Tell Us About AI Coding Tools</span></span></a>
+</section>
+
+<section class="slide slide--default wide has-source">
+<div class="slide__inner">
+<h4>Sechs Kategorien über 2.500 Commits: Bugfixes, Features, Doku, Refactoring, Tests, UI</h4>
+<h2>In ernsthaften Repos übernimmt Claude die Wartungslast</h2>
+<div class="grid grid--2"><div class="card card--green"><div class="card__icon">🧹</div><h3 class="card__title">Wartungslast wandert ab</h3><div class="card__body"><p>In Nicht-KI-Projekten überwiegen Bugfixes — die Arbeit, die niemand freiwillig macht. Nur KI-Projekte selbst setzen Claude überwiegend für Features ein.</p></div></div>
+<div class="card card--amber"><div class="card__icon">🎨</div><h3 class="card__title">UI ist die kleinste Kategorie</h3><div class="card__body"><p>Vorsicht bei der Deutung: Sein Sample sind die meistgesternten Repos — Deno, Bun, Home Assistant. Seine eigene Erklärung: In UI und UX sind Designer und Entwickler noch stärker selbst beteiligt.</p></div></div></div>
+<div class="callout callout--note"><span class="callout__icon">📌</span><div class="callout__body"><b class="callout__title">Zwei Repos, zwei Nutzungsmuster</b><p><strong>Apache Superset</strong> ließ Claude vor allem die TypeScript-Qualität von menschlich geschriebenem Code aufräumen. <strong>ClickHouse</strong> committet im gleichen Zeitraum zehnmal so viel — fast alles CI, Tests, Infrastruktur, damit die Engineers an Features arbeiten können.</p></div></div>
+</div>
+<a class="source" href="https://gitnation.com/contents/what-is-claude-coding" target="_blank" rel="noopener"><img class="source__photo" src="assets/speakers/alberts.jpg" alt="Jodan Alberts"><span class="source__text"><span class="source__name">Jodan Alberts · advance.io</span><span class="source__talk">What Claude Stats Tell Us About AI Coding Tools</span></span></a>
+</section>
+
+<section class="slide slide--section">
+<div class="slide__inner">
+<h4>Teil 2</h4>
+<h2>Stand der Technik</h2>
+<p>Vom Prompt zum System — und woran die Zwischenstufen scheitern.</p>
+</div>
+</section>
+
+<section class="slide slide--default wide has-source">
+<div class="slide__inner">
+<h4>Vladimir Novick hat drei Stufen durchlaufen — jede fühlte sich wie Fortschritt an</h4>
+<h2>Drei Stufen, drei Sollbruchstellen</h2>
+<div class="grid grid--3"><div class="card card--amber"><div class="card__icon">📝</div><h3 class="card__title">Prompts</h3><div class="card__body"><p>Zustandslos, jede Session fängt bei null an.</p>
+<p>Den Kontext trägt <strong>der Mensch</strong> von Fenster zu Fenster.</p></div></div>
+<div class="card card--violet"><div class="card__icon">🧭</div><h3 class="card__title">Single-Agent</h3><div class="card__body"><p>Verliert im langen Thread den Faden.</p>
+<p>Und <strong>niemand prüft ihn</strong> außer er selbst.</p></div></div>
+<div class="card card--red"><div class="card__icon">🐝</div><h3 class="card__title">Naiver Schwarm</h3><div class="card__body"><p>Kollabiert am schnellsten.</p>
+<p>Fehler heben sich nicht auf, sie <strong>multiplizieren sich</strong> bei jeder Übergabe.</p></div></div></div>
+<div class="callout callout--danger"><span class="callout__icon">🛑</span><div class="callout__body"><b class="callout__title">Verkettete Zuverlässigkeit: 95 % → 77 % → 36 %</b><p>Novicks Reihe für immer längere Ketten. Fehler heben sich nicht gegenseitig auf, sie multiplizieren sich — jede weitere Übergabe drückt das Ergebnis. Das gilt für jede mehrstufige Kette; der Schwarm hat nur die meisten Übergaben.</p></div></div>
+<div class="links"><a class="link" href="https://arxiv.org/abs/2503.13657" target="_blank" rel="noopener"><span class="link__label">Warum Multi-Agent-Systeme scheitern: MAST-Studie, UC Berkeley</span><span class="link__url">arxiv.org/abs/2503.13657</span></a></div>
+</div>
+<a class="source" href="https://gitnation.com/contents/from-prompting-to-orchestrating-coding-is-now-a-system" target="_blank" rel="noopener"><img class="source__photo" src="assets/speakers/novick.jpg" alt="Vladimir Novick"><span class="source__text"><span class="source__name">Vladimir Novick · Novick Labs</span><span class="source__talk">From Prompting to Orchestrating: Coding Is Now a System</span></span></a>
+</section>
+
+<section class="slide slide--default wide has-source">
+<div class="slide__inner">
+<h4>Seine Antwort auf den Kollaps: einer besitzt den Kontext, Worker melden zurück</h4>
+<h2>Nicht besser prompten — ein System bauen, das prüft</h2>
+<div class="grid grid--3"><div class="card card--accent"><div class="card__icon">⚖️</div><h3 class="card__title">Architektur ist Gesetz</h3><div class="card__body"><p>Contracts und Grenzen werden <strong>mechanisch erzwungen</strong> — über Typen, Linting, Tests. Nicht per Absprache in einer Regeldatei.</p></div></div>
+<div class="card card--green"><div class="card__icon">🔀</div><h3 class="card__title">Kontext ist ein Protokoll</h3><div class="card__body"><p>Kein großer Prompt, sondern <strong>strukturierte Übergaben</strong>, die den einzelnen Lauf überdauern. Worker arbeiten isoliert.</p></div></div>
+<div class="card card--violet"><div class="card__icon">🚦</div><h3 class="card__title">Fertig ist messbar</h3><div class="card__body"><p>„Fertig" entscheidet, <strong>was nicht halluzinieren kann</strong>: Tests, Types, Lint, Build. Nie die Aussage eines Modells.</p></div></div></div>
+<div class="callout callout--tip"><span class="callout__icon">💡</span><div class="callout__body"><b class="callout__title">Nicht Multi-Agent ist das Problem, sondern der unstrukturierte Schwarm</b><p>Nur die Struktur zu ändern — gleiches Modell — brachte in Coding- und Reasoning-Benchmarks 12 bis 23 % mehr.</p></div></div>
+<div class="links"><a class="link" href="https://github.com/vnovick/orchestrated-coding" target="_blank" rel="noopener"><span class="link__label">Novicks Spec, offen</span><span class="link__url">github.com/vnovick/orchestrated-coding</span></a><a class="link" href="https://github.com/vnovick/itervox" target="_blank" rel="noopener"><span class="link__label">Seine Implementierung davon</span><span class="link__url">github.com/vnovick/itervox</span></a></div>
+</div>
+<a class="source" href="https://gitnation.com/contents/from-prompting-to-orchestrating-coding-is-now-a-system" target="_blank" rel="noopener"><img class="source__photo" src="assets/speakers/novick.jpg" alt="Vladimir Novick"><span class="source__text"><span class="source__name">Vladimir Novick · Novick Labs</span><span class="source__talk">From Prompting to Orchestrating: Coding Is Now a System</span></span></a>
+</section>
+
+<section class="slide slide--default wide has-source">
+<div class="slide__inner">
+<h4>Vier Reifegrade — der Unterschied ist nicht das Werkzeug</h4>
+<h2>Wer darf entscheiden, dass etwas fertig ist?</h2>
+<table><thead><tr><th class="ta-left">Stufe</th><th class="ta-left">„Fertig" entscheidet</th><th class="ta-left">Im Alltag heißt das</th></tr></thead><tbody><tr><td class="ta-left"><strong>L0</strong> assistiert</td><td class="ta-left">der Mensch</td><td class="ta-left">Agent schreibt, Mensch liest und merged jede Änderung</td></tr><tr><td class="ta-left"><strong>L1</strong> orchestriert</td><td class="ta-left">der Mensch</td><td class="ta-left">System verteilt und übergibt geordnet — reviewt wird weiter alles</td></tr><tr><td class="ta-left"><strong>L2</strong> governed</td><td class="ta-left">das Gate</td><td class="ta-left">unabhängiges Review plus grüne Checks, dann landet es von selbst</td></tr><tr><td class="ta-left"><strong>L3</strong> resilient</td><td class="ta-left">das Gate</td><td class="ta-left">System pausiert bei Unklarheit, fragt nach, nimmt selbst wieder auf</td></tr></tbody></table>
+<div class="callout callout--note"><span class="callout__icon">📌</span><div class="callout__body"><b class="callout__title">Der Sprung von L1 nach L2 ist keine Anschaffung</b><p>Zwischen den ersten beiden Zeilen und den letzten beiden liegt kein Werkzeug, sondern eine Entscheidung: ob wir einem automatischen Gate zutrauen, für uns zu entscheiden. Alles darüber setzt voraus, dass das Gate wirklich prüft.</p></div></div>
+</div>
+<a class="source" href="https://gitnation.com/contents/from-prompting-to-orchestrating-coding-is-now-a-system" target="_blank" rel="noopener"><img class="source__photo" src="assets/speakers/novick.jpg" alt="Vladimir Novick"><span class="source__text"><span class="source__name">Vladimir Novick · Novick Labs</span><span class="source__talk">From Prompting to Orchestrating: Coding Is Now a System</span></span></a>
+</section>
+
+<section class="slide slide--section">
+<div class="slide__inner">
+<h4>Teil 3</h4>
+<h2>Skills</h2>
+<p>Wiederverwendbare Anleitungen statt immer neuer Prompts.</p>
+</div>
+</section>
+
+<section class="slide slide--default wide has-source">
+<div class="slide__inner">
+<h4>Minko Gechev, Google: „Diese Skills sind nicht für Menschen, sie sind für Agenten"</h4>
+<h2>Eine Anleitung, kein Aufsatz</h2>
+<div class="grid grid--2"><div class="card card--amber"><div class="card__icon">📚</div><h3 class="card__title">Doku für Menschen</h3><div class="card__body"><p>Erklärt Zusammenhänge, begründet Entscheidungen, arbeitet mit Analogien und Beispielen.</p>
+<p>Ein Agent braucht davon fast nichts.</p></div></div>
+<div class="card card--green"><div class="card__icon">🔧</div><h3 class="card__title">Skill für Agenten</h3><div class="card__body"><p>Sagt Schritt für Schritt, was zu tun ist. Drei Teile: <code>SKILL.md</code>, deterministische Scripts, Referenzdateien.</p>
+<p>Nachladen statt vorhalten.</p></div></div></div>
+<div class="callout callout--tip"><span class="callout__icon">💡</span><div class="callout__body"><b class="callout__title">Sein schärfstes Beispiel: Prosa durch ein Script ersetzen</b><p>„Prüfe erst, ob npm installiert ist, suche dann die Pakete …" — jede Zeile Prosa kann mehrere Tool-Calls und je eine Runde zurück zum Modell bedeuten. Dieselben Schritte als Script: ein Aufruf, deterministisch, und testbar.</p></div></div>
+<div class="links"><a class="link" href="https://mgechev.github.io/skill-design-for-llm-agents-slides/" target="_blank" rel="noopener"><span class="link__label">Seine Folien, alle 40</span><span class="link__url">mgechev.github.io/skill-design-for-llm-agents-slides</span></a></div>
+</div>
+<a class="source" href="https://gitnation.com/contents/skill-design-for-llm-agents" target="_blank" rel="noopener"><img class="source__photo" src="assets/speakers/gechev.jpg" alt="Minko Gechev"><span class="source__text"><span class="source__name">Minko Gechev · Google</span><span class="source__talk">Skill Design for LLM Agents</span></span></a>
+</section>
+
+<section class="slide slide--default wide has-source">
+<div class="slide__inner">
+<h4>Drei Ebenen, gestaffelt danach, was sie an Kontext kosten</h4>
+<h2>Was gehört wohin?</h2>
+<div class="grid grid--3"><div class="card card--amber"><div class="card__icon">📌</div><h3 class="card__title">CLAUDE.md</h3><div class="card__body"><p>Geht bei <strong>jedem</strong> Request mit. Also: Stack und ein paar Regeln, sonst nichts.</p></div></div>
+<div class="card card--green"><div class="card__icon">♻️</div><h3 class="card__title">Skill</h3><div class="card__body"><p>Greift <strong>nur, wenn er gebraucht wird</strong>, bleibt dann in der Session und lädt Referenzen nach.</p></div></div>
+<div class="card card--violet"><div class="card__icon">🧵</div><h3 class="card__title">Sub-Agent</h3><div class="card__body"><p><strong>Eigener Kontext</strong> für Aufgaben, die den Hauptthread sonst zumüllen.</p></div></div></div>
+<div class="callout callout--tip"><span class="callout__icon">💡</span><div class="callout__body"><b class="callout__title">Ávilas Kniff: lesen lassen oder ausführen lassen</b><p>Eine Referenzdatei <strong>lesen lassen</strong> heißt: sie steht vollständig im Kontext. Ein Script <strong>ausführen</strong> lassen und nur die Ausgabe lesen kostet fast nichts.</p></div></div>
+<div class="links"><a class="link" href="https://aitmpl.com" target="_blank" rel="noopener"><span class="link__label">Seine Komponentensammlung zum Stöbern</span><span class="link__url">aitmpl.com</span></a><a class="link" href="https://github.com/davila7/claude-code-templates" target="_blank" rel="noopener"><span class="link__label">Claude Code Templates, Open Source</span><span class="link__url">github.com/davila7/claude-code-templates</span></a></div>
+</div>
+<a class="source" href="https://gitnation.com/contents/skills-templates-and-components-for-claude-code-and-ai-coding-workflows" target="_blank" rel="noopener"><img class="source__photo" src="assets/speakers/avila.jpg" alt="Daniel Ávila"><span class="source__text"><span class="source__name">Daniel Ávila · Claude Code Templates</span><span class="source__talk">Templates and Components for Claude Code</span></span></a>
+</section>
+
+<section class="slide slide--default wide has-source">
+<div class="slide__inner">
+<h4>Auch ungenutzte Skills kosten Kontext — ihre Beschreibung liegt dauerhaft drin</h4>
+<h2>Wie viele Skills verträgt ein Setup?</h2>
+<div class="stats"><div class="stat"><span class="stat__value">20–30</span><span class="stat__label">idealer Bereich, unter 50 bleiben</span></div><div class="stat"><span class="stat__value">~200</span><span class="stat__label">ab hier sinkt die Genauigkeit merklich</span></div><div class="stat"><span class="stat__value">500</span><span class="stat__label">spätestens hier muss aufgeräumt werden</span></div></div>
+<div class="callout callout--warn"><span class="callout__icon">⚠️</span><div class="callout__body"><b class="callout__title">Gechevs Antwort: Unit-Tests für Skills</b><p>Skill-Ordner wachsen nicht geplant, sie wachsen nebenbei. Sein Tool SkillGrade erzeugt aus einer Skill-Datei automatisch Evaluationen und fährt Smoke-Tests. Im Trajectory-Log sieht man dann, an welcher Stelle der Agent falsch abgebogen ist — sein Beispiel: ein Skill bestand 4 von 5 Läufen, es fehlten zwei Anweisungen.</p></div></div>
+<div class="links"><a class="link" href="https://github.com/mgechev/skillgrade" target="_blank" rel="noopener"><span class="link__label">SkillGrade, Open Source</span><span class="link__url">github.com/mgechev/skillgrade</span></a></div>
+</div>
+<a class="source" href="https://gitnation.com/contents/skill-design-for-llm-agents" target="_blank" rel="noopener"><img class="source__photo" src="assets/speakers/gechev.jpg" alt="Minko Gechev"><span class="source__text"><span class="source__name">Minko Gechev · Google</span><span class="source__talk">Skill Design for LLM Agents</span></span></a>
+</section>
+
+<section class="slide slide--default wide has-source">
+<div class="slide__inner">
+<h4>Povilas Korop: 18 Modelle, 5 Projekte, 5 Läufe — ausgewertet per Tests, nicht per LLM-Urteil</h4>
+<h2>Modellwahl nach Aufgabentyp</h2>
+<table><thead><tr><th class="ta-left">Aufgabe</th><th class="ta-left">Modell</th><th class="ta-left">Warum</th></tr></thead><tbody><tr><td class="ta-left">Planen, Architektur, harte Analyse</td><td class="ta-left"><strong>Opus</strong>, <strong>Fable</strong> oder <strong>GPT</strong></td><td class="ta-left">teuer — aber hier entscheidet sich alles</td></tr><tr><td class="ta-left">Umsetzung nach Plan</td><td class="ta-left">ein <strong>günstigeres</strong> Modell, er nennt Composer 2.5</td><td class="ta-left">Fleißarbeit mit klarer Vorgabe</td></tr><tr><td class="ta-left">Review</td><td class="ta-left">ein <strong>anderes</strong> Modell als beim Schreiben</td><td class="ta-left">siehe Teil 5</td></tr><tr><td class="ta-left">Routine, z. B. Commit-Nachrichten</td><td class="ta-left"><strong>Haiku</strong>, niedriger Effort</td><td class="ta-left">Ávilas Empfehlung, nicht Korops</td></tr></tbody></table>
+<div class="callout callout--note"><span class="callout__icon">📌</span><div class="callout__body"><b class="callout__title">Zwei Befunde, die länger halten als jede Modellrangliste</b><p>Offizielle Benchmarks wie SWE-Bench werden von Modellen inzwischen erkannt und bedient — für Alltagsaufgaben sagen sie wenig. Und am Ende entscheidet der ganze Harness: IDE, Skills, Prompts, Guardrails. Nicht das Modell allein.</p></div></div>
+<div class="links"><a class="link" href="https://aicodingdaily.substack.com" target="_blank" rel="noopener"><span class="link__label">Sein Benchmark, laufend aktualisiert</span><span class="link__url">aicodingdaily.substack.com</span></a></div>
+</div>
+<a class="source" href="https://gitnation.com/contents/learnings-from-100-experiments-comparing-llms-for-ai-coding" target="_blank" rel="noopener"><img class="source__photo" src="assets/speakers/korop.jpg" alt="Povilas Korop"><span class="source__text"><span class="source__name">Povilas Korop · AI Coding Daily</span><span class="source__talk">Learnings From 100+ Experiments Comparing LLMs for AI Coding</span></span></a>
+</section>
+
+<section class="slide slide--default">
+<div class="slide__inner">
+<h4>Skill-Hygiene</h4>
+<h2>Vier Fragen, die jedes Setup irgendwann einholen</h2>
+<ol class="steps"><li class="step"><span class="step__num">1</span><span class="step__text"><b>Bestand</b><span>welche Skills existieren, und wer weiß davon</span></span></li><li class="step"><span class="step__num">2</span><span class="step__text"><b>Nutzung</b><span>welche greifen im Alltag, welche nie</span></span></li><li class="step"><span class="step__num">3</span><span class="step__text"><b>Prüfung</b><span>woran wird sichtbar, dass ein Skill schlechter geworden ist</span></span></li><li class="step"><span class="step__num">4</span><span class="step__text"><b>Pflege</b><span>wer entfernt, was niemand mehr benutzt</span></span></li></ol>
+</div>
+</section>
+
+<section class="slide slide--section">
+<div class="slide__inner">
+<h4>Teil 4</h4>
+<h2>Orchestrierung in der Praxis</h2>
+</div>
+</section>
+
+<section class="slide slide--default wide has-source">
+<div class="slide__inner">
+<h4>Konstantinos Leimonis betreut die Plattform hinter über 500 Micro-Frontends</h4>
+<h2>Eine Node-Migration über 527 Repositories</h2>
+<div class="stats"><div class="stat"><span class="stat__value">527</span><span class="stat__label">Repositories, ein Versionssprung</span></div><div class="stat"><span class="stat__value">87 %</span><span class="stat__label">liefen ohne jeden menschlichen Eingriff durch</span></div><div class="stat"><span class="stat__value">3 statt 6</span><span class="stat__label">Monate — das System selbst brauchte davon ein paar</span></div></div>
+<div class="callout callout--note"><span class="callout__icon">📌</span><div class="callout__body"><b class="callout__title">Warum kein Codemod</b><p>Ein Umschreibe-Skript löst die vorhersehbare Mehrheit und scheitert am unübersichtlichen Rest — und behauptet dabei, die Migration sei fertig. Genau dieser Rest entscheidet. Also bauten sie stattdessen ein System aus parallel laufenden Agenten — und das läuft nach der Migration weiter: für den nächsten Versionssprung, den nächsten Lint-Rollout.</p></div></div>
+</div>
+<a class="source" href="https://gitnation.com/contents/from-one-repo-to-hundreds-building-an-ai-agent-fleet-for-large-scale-code-migrations" target="_blank" rel="noopener"><img class="source__photo" src="assets/speakers/leimonis.jpg" alt="Konstantinos Leimonis"><span class="source__text"><span class="source__name">Konstantinos Leimonis · monday.com</span><span class="source__talk">From One Repo to Hundreds: Building an AI Agent Fleet</span></span></a>
+</section>
+
+<section class="slide slide--default wide has-source">
+<div class="slide__inner">
+<h4>Der Orchestrator ist eine Schleife, die alle paar Stunden über ein Board läuft</h4>
+<h2>Woran das System hängt</h2>
+<div class="grid grid--2"><div class="card card--accent"><div class="card__icon">📋</div><h3 class="card__title">Das Board ist der Vertrag</h3><div class="card__body"><p>Agenten reden nie miteinander. Jeder liest festgelegte Zeilen, erledigt eine Aufgabe, schreibt zurück, stoppt.</p></div></div>
+<div class="card card--green"><div class="card__icon">⚙️</div><h3 class="card__title">Skript oder Modell, nie beides</h3><div class="card__body"><p>Version hochziehen, Lockfile, Tests: Skript, kostet nichts — und rät im Zweifel nicht, sondern hält an. Nur das Reparieren braucht ein Modell.</p></div></div>
+<div class="card card--violet"><div class="card__icon">📏</div><h3 class="card__title">Baseline vor Migration</h3><div class="card__body"><p>Vorher bauen und testen, festhalten was schon kaputt war. Repariert wird nur, was die Migration neu zerbricht.</p>
+<p><strong>Ohne Tests keine Baseline, ohne Baseline keine Autonomie.</strong></p></div></div>
+<div class="card card--amber"><div class="card__icon">🔒</div><h3 class="card__title">Der Loop hat ein Ende</h3><div class="card__body"><p>Günstiges Modell zuerst, teures höchstens zweimal, dann „stuck" — und das Board zeigt, bei welchem Schritt.</p></div></div></div>
+</div>
+<a class="source" href="https://gitnation.com/contents/from-one-repo-to-hundreds-building-an-ai-agent-fleet-for-large-scale-code-migrations" target="_blank" rel="noopener"><img class="source__photo" src="assets/speakers/leimonis.jpg" alt="Konstantinos Leimonis"><span class="source__text"><span class="source__name">Konstantinos Leimonis · monday.com</span><span class="source__talk">From One Repo to Hundreds: Building an AI Agent Fleet</span></span></a>
+</section>
+
+<section class="slide slide--default wide has-source">
+<div class="slide__inner">
+<h4>Valerii Iatsko, Google — dasselbe Prinzip, eine Nummer kleiner</h4>
+<h2>Ein Loop ist vier Dateien und ein Script</h2>
+<div class="grid grid--2-1"><div class="pane pane--plain"><pre><code class="language-text">spec.md       was am Ende dastehen soll — vorab geschrieben,
+              nicht im Loop
+plan.md       die Schritte dorthin, laufend gegen die Spec
+              abgeglichen — das Herz des Ganzen
+agents.md     Ausführungsregeln für die Agenten
+progress.md   wo der Loop gerade steht
+loop.sh       liest alles und läuft</code></pre></div>
+<div class="pane pane--sunken"><h4>Drei Bedingungen</h4>
+<p>Wiederkehrend · überprüfbar · begrenzt</p>
+<h4>Eine Regel</h4>
+<p>Tests bleiben <strong>read-only</strong>.</p></div></div>
+<div class="callout callout--danger"><span class="callout__icon">🛑</span><div class="callout__body"><b class="callout__title">Was passiert, wenn die dritte Bedingung fehlt</b><p>Ein Team ließ über Nacht sechs Projekte bauen — 50.000 $ Budget, 800 $ verbraucht. Der Refactoring-Loop danach lieferte <strong>einen PR mit 20.000 Zeilen und 1.600 To-dos</strong>. Nicht gemergt, für einen Menschen nicht verifizierbar.</p></div></div>
+<div class="links"><a class="link" href="https://addyosmani.com/blog/loop-engineering/" target="_blank" rel="noopener"><span class="link__label">Woher der Begriff kommt: Addy Osmani, Juni 2026</span><span class="link__url">addyosmani.com/blog/loop-engineering</span></a></div>
+</div>
+<a class="source" href="https://gitnation.com/contents/from-prompt-engineering-to-loop-engineering" target="_blank" rel="noopener"><img class="source__photo" src="assets/speakers/iatsko.jpg" alt="Valerii Iatsko"><span class="source__text"><span class="source__name">Valerii Iatsko · Google</span><span class="source__talk">From Prompt Engineering to Loop Engineering</span></span></a>
+</section>
+
+<section class="slide slide--section">
+<div class="slide__inner">
+<h4>Teil 5</h4>
+<h2>Verifikation</h2>
+<p>Wer prüft, womit — und warum grüne Checks nicht genügen.</p>
+</div>
+</section>
+
+<section class="slide slide--default wide has-source">
+<div class="slide__inner">
+<h2>Wie viel davon ist überhaupt noch unser Code?</h2>
+<div class="stats"><div class="stat"><span class="stat__value">42 %</span><span class="stat__label">KI-generiert oder KI-unterstützt, laut Sonar-Umfrage</span></div><div class="stat"><span class="stat__value">~90 %</span><span class="stat__label">Sogls eigene Schätzung aus Kundenprojekten</span></div></div>
+<div class="callout callout--warn"><span class="callout__icon">⚠️</span><div class="callout__body"><b class="callout__title">Daniel Sogl</b><p>Die 42 % sind Selbstauskunft von Entwickler:innen, erhoben von einem Anbieter, der in dem Feld Produkte verkauft — mit Vorsicht zu lesen. Denselben Befund zeigen die anderen Zahlen, die er zitiert: Review-Zeiten explodieren und 31 % werden ganz ohne Review gemergt (Faros AI), Incidents nehmen zu (Googles DORA-Report). Dazu Code Churn — Code, den man direkt nach dem Merge wieder anfassen muss.</p></div></div>
+<div class="links"><a class="link" href="https://www.sonarsource.com/state-of-code-developer-survey-report.pdf" target="_blank" rel="noopener"><span class="link__label">Die Umfrage selbst, 1.100 Entwickler:innen — zum Nachprüfen</span><span class="link__url">sonarsource.com/state-of-code-developer-survey-report.pdf</span></a></div>
+</div>
+<a class="source" href="https://gitnation.com/contents/ai-reviews-ai-closing-the-loop-in-agentic-development" target="_blank" rel="noopener"><img class="source__photo" src="assets/speakers/sogl.jpg" alt="Daniel Sogl"><span class="source__text"><span class="source__name">Daniel Sogl · Thinktecture</span><span class="source__talk">AI Reviews AI — Closing the Loop in Agentic Development</span></span></a>
+</section>
+
+<section class="slide slide--default wide has-source">
+<div class="slide__inner">
+<h2>Wer prüft, darf nicht derselbe sein</h2>
+<ol class="steps"><li class="step"><span class="step__num">1</span><span class="step__text"><b>Deterministisch zuerst</b><span>Linter, Typen, Tests, Hooks. Günstig, schnell, verlässlich</span></span></li><li class="step"><span class="step__num">2</span><span class="step__text"><b>Dann Sub-Agents im Loop</b><span>Feedback über Hooks, während der Agent noch arbeitet</span></span></li><li class="step"><span class="step__num">3</span><span class="step__text"><b>Dann PR-Services</b><span>hilfreich, aber Vorsicht vor Lärm</span></span></li></ol>
+<div class="callout callout--warn"><span class="callout__icon">⚠️</span><div class="callout__body"><b class="callout__title">Zwei Trennungen: anderes Modell, andere Session</b><p>Nicht das Modell, das den Code geschrieben hat — und nicht die Session, in der er entstanden ist. Ebenso wenig taugen KI-generierte Tests für bestehenden Code: die bestätigen nur den Status quo.</p></div></div>
+</div>
+<a class="source" href="https://gitnation.com/contents/ai-reviews-ai-closing-the-loop-in-agentic-development" target="_blank" rel="noopener"><img class="source__photo" src="assets/speakers/sogl.jpg" alt="Daniel Sogl"><span class="source__text"><span class="source__name">Daniel Sogl · Thinktecture</span><span class="source__talk">AI Reviews AI — Closing the Loop in Agentic Development</span></span></a>
+</section>
+
+<section class="slide slide--default wide has-source">
+<div class="slide__inner">
+<h2>Die vierte Prüfebene: strukturelle Drift</h2>
+<div class="grid grid--1-2"><div class="pane pane--sunken"><h4>Üblich sind drei Ebenen</h4>
+<p>Typen · Linting · Tests</p>
+<h4>Was keine davon sieht</h4>
+<p>Der Code ist gültig und passt trotzdem nicht mehr zum Rest des Systems. Toter Code, Duplizierung, Grenzverletzungen.</p></div>
+<div class="pane pane--plain"><pre><code class="language-bash"># In CLAUDE.md: eine Bitte, die niemand prüft
+&quot;Bitte immer die bestehenden Utils verwenden&quot;
+
+# Als Hook vor git commit: eine Bedingung
+fallow audit --gate new-only
+  → Pass / Warn / Fail
+  → nur geänderte Dateien
+  → neue Verstöße blockieren
+  → geerbte Verstöße nur melden</code></pre>
+<div class="links"><a class="link" href="https://github.com/fallow-rs/fallow" target="_blank" rel="noopener"><span class="link__label">fallow — statische Analyse, Open Source</span><span class="link__url">github.com/fallow-rs/fallow</span></a></div></div></div>
+<div class="callout callout--tip"><span class="callout__icon">💡</span><div class="callout__body"><b class="callout__title">Für die vierte Ebene reicht keine Regeldatei</b><p>Waardenburgs Bild: Eine Regeldatei ist die Sicherheitsansage im Flugzeug — wichtige Information, ohne Garantie, dass jemand zuhört. Anthropics Doku sagt es trockener: CLAUDE.md kommt als User-Message, ohne Garantie auf strikte Befolgung. Was an einem festen Punkt laufen muss, gehört in einen Hook.</p></div></div>
+</div>
+<a class="source" href="https://gitnation.com/contents/fast-code-generation-is-easy-safe-system-level-change-is-not" target="_blank" rel="noopener"><img class="source__photo" src="assets/speakers/waardenburg.jpg" alt="Bart Waardenburg"><span class="source__text"><span class="source__name">Bart Waardenburg · Fallow</span><span class="source__talk">Fast Code Generation Is Easy. Safe System-level Change Is Not.</span></span></a>
+</section>
+
+<section class="slide slide--center has-source">
+<div class="slide__inner">
+<h2>Ein Gate, das nicht prüft, ist schlimmer als keins</h2>
+<p>Man übernimmt seinen blinden Fleck — und hört auf, selbst hinzusehen. Novick schätzt rund 70 % der Fehler auf grüne Checks, die nichts geprüft haben.</p>
+</div>
+<a class="source" href="https://gitnation.com/contents/from-prompting-to-orchestrating-coding-is-now-a-system" target="_blank" rel="noopener"><img class="source__photo" src="assets/speakers/novick.jpg" alt="Vladimir Novick"><span class="source__text"><span class="source__name">Vladimir Novick · Novick Labs</span><span class="source__talk">From Prompting to Orchestrating: Coding Is Now a System</span></span></a>
+</section>
+
+<section class="slide slide--default wide has-source">
+<div class="slide__inner">
+<h4>Mobile QA: Der Diff ist lesbar, das CI grün — und die App auf dem Gerät kaputt</h4>
+<h2>Der Merge-Button ist eine Vertrauensentscheidung</h2>
+<div class="stats"><div class="stat"><span class="stat__value">90 Mio.</span><span class="stat__label">gemergte PRs pro Monat, +100 % im Jahr</span></div><div class="stat"><span class="stat__value">≤ 60 %</span><span class="stat__label">der Bugs findet ein Mensch — und nur als Expert:in, unter 200 Zeilen Diff</span></div></div>
+<div class="grid grid--2"><div class="card card--amber"><div class="card__icon">🙈</div><h3 class="card__title">Im Diff unsichtbar</h3><div class="card__body"><p>Die eingeblendete Tastatur verdeckt den Absenden-Button. Der Release-Build stürzt ab, der Debug-Build lief.</p></div></div>
+<div class="card card--green"><div class="card__icon">📱</div><h3 class="card__title">App Behavior Review</h3><div class="card__body"><p>Ein Agent auf Simulator oder echtem Gerät, enge Mission aus den PR-Metadaten. Screenshots als Beleg im PR.</p></div></div></div>
+<div class="links"><a class="link" href="https://github.com/callstack/agent-device" target="_blank" rel="noopener"><span class="link__label">agent-device — sein CLI dafür, Open Source</span><span class="link__url">github.com/callstack/agent-device</span></a></div>
+</div>
+<a class="source" href="https://gitnation.com/contents/automating-mobile-qa-with-cloud-agents" target="_blank" rel="noopener"><img class="source__photo" src="assets/speakers/pierzchala.jpg" alt="Michał Pierzchała"><span class="source__text"><span class="source__name">Michał Pierzchała · Callstack</span><span class="source__talk">Automating Mobile QA with Cloud Agents</span></span></a>
+</section>
+
+<section class="slide slide--section">
+<div class="slide__inner">
+<h4>Teil 6</h4>
+<h2>Die dunkle Seite</h2>
+</div>
+</section>
+
+<section class="slide slide--default wide has-source">
+<div class="slide__inner">
+<h4>Was ein Agent aus Logs, Events und Tool-Ergebnissen liest, prüft er nicht nach</h4>
+<h2>Man muss das Modell nicht angreifen — nur seine Datenquelle</h2>
+<div class="grid grid--2"><div class="card card--red"><div class="card__icon">🔌</div><h3 class="card__title">Warum das funktioniert</h3><div class="card__body"><p>Ein Agent glaubt seinen Werkzeugen. Dieselbe Falschinformation als Text im Prompt: <strong>zu 0 % übernommen</strong>. Als Ergebnis eines echten Tool-Aufrufs: <strong>zu 100 %</strong>.</p></div></div>
+<div class="card card--amber"><div class="card__icon">🌊</div><h3 class="card__title">Wo angesetzt wird</h3><div class="card__body"><p>Überall, wo jemand in den Datenstrom schreiben kann. Ihr Beispiel: ein Konto über längere Zeit mit kleinen, unauffälligen Buchungen normal aussehen lassen — dann die eigentliche Betrugstransaktion.</p></div></div></div>
+<div class="callout callout--warn"><span class="callout__icon">⚠️</span><div class="callout__body"><b class="callout__title">Ihre Antwort: den eigenen Datenstrom als ungeprüfte Eingabe behandeln</b><p>Data Contracts statt reinem Schema-Check — also Wertebereiche und Fachregeln, nicht nur „Feld ist eine Zahl". Dazu Lineage: nachvollziehbar halten, woher ein Wert stammt und was ihn unterwegs verändert hat.</p></div></div>
+<div class="links"><a class="link" href="https://www.anthropic.com/research/small-samples-poison" target="_blank" rel="noopener"><span class="link__label">Auch das Training ist billig zu vergiften: 250 Dokumente genügen</span><span class="link__url">anthropic.com/research/small-samples-poison</span></a></div>
+</div>
+<a class="source" href="https://gitnation.com/contents/streaming-systems-hidden-risks-and-ai-driven-consequences" target="_blank" rel="noopener"><img class="source__photo" src="assets/speakers/kutsenko.jpg" alt="Olena Kutsenko"><span class="source__text"><span class="source__name">Olena Kutsenko · Confluent</span><span class="source__talk">Streaming Systems, Hidden Risks, And AI-driven Consequences</span></span></a>
+</section>
+
+<section class="slide slide--default wide has-source">
+<div class="slide__inner">
+<h4>Drift: Der Agent läuft erfolgreich durch — und tut trotzdem nicht das Gemeinte</h4>
+<h2>Kein Absturz, kein Stacktrace, keine Fehlermeldung</h2>
+<div class="grid grid--3"><div class="card card--amber"><div class="card__icon">🧩</div><h3 class="card__title">Warum es schwer zu finden ist</h3><div class="card__body"><p>Ein Compile-Fehler zeigt die Stelle. Drift ist ein Laufzeitfehler — man muss den ganzen Lauf nachvollziehen.</p></div></div>
+<div class="card card--violet"><div class="card__icon">🔬</div><h3 class="card__title">Womit man es sichtbar macht</h3><div class="card__body"><p>Traces und Spans statt Logs: ein Lauf ist ein Trace, jeder Schritt ein Span mit Modell, Tokens, Latenz.</p></div></div>
+<div class="card card--green"><div class="card__icon">🎯</div><h3 class="card__title">Wo die Ursache fast immer liegt</h3><div class="card__body"><p>Im Kontextfenster genau dieses Moments. Erst dort nachsehen, dann übers Modelltauschen nachdenken.</p></div></div></div>
+<div class="callout callout--note"><span class="callout__icon">📌</span><div class="callout__body"><b class="callout__title">Bei tausend Läufen liest niemand mehr mit</b><p>Dann werden Läufe geclustert und nach Verhaltensmustern gruppiert — etwa ineffiziente Token-Nutzung oder Nutzer, die im Verlauf zunehmend genervt reagieren. Nur für geschäftskritisches Verhalten lohnt ein Echtzeit-Signal.</p></div></div>
+</div>
+<a class="source" href="https://gitnation.com/contents/ai-agents-drift-identifying-and-correcting-subtle-failures" target="_blank" rel="noopener"><img class="source__photo" src="assets/speakers/komesarook.jpg" alt="Sam Komesarook"><span class="source__text"><span class="source__name">Sam Komesarook · Arts & Engineering Composite</span><span class="source__talk">AI Agents Drift: Identifying and Correcting Subtle Failures</span></span></a>
+</section>
+
+<section class="slide slide--section">
+<div class="slide__inner">
+<h4>Teil 7</h4>
+<h2>Schluss</h2>
+</div>
+</section>
+
+<section class="slide slide--default wide">
+<div class="slide__inner">
+<h2>Vier Beobachtungen, die sich durch alle Talks ziehen</h2>
+<ol class="steps"><li class="step"><span class="step__num">1</span><span class="step__text"><b>Vom Prompt zum System</b><span>die Arbeit verschiebt sich vom Formulieren zum Bauen von etwas, das Code erzeugt und prüft</span></span></li><li class="step"><span class="step__num">2</span><span class="step__text"><b>Kontext ist die knappe Ressource</b><span>nicht die Modellgröße begrenzt, sondern was im Fenster steht</span></span></li><li class="step"><span class="step__num">3</span><span class="step__text"><b>Der Flaschenhals ist die Prüfung</b><span>Erzeugen ist billig geworden, Verifizieren nicht</span></span></li><li class="step"><span class="step__num">4</span><span class="step__text"><b>Verbindlich ist nur, was erzwungen wird</b><span>Tests, Typen, Hooks, Gates. Bitten in einer Regeldatei reichen nicht</span></span></li></ol>
+<div class="callout callout--note"><span class="callout__icon">📌</span><div class="callout__body"><b class="callout__title">Bemerkenswert ist die Übereinstimmung</b><p>Keiner dieser Punkte kam von einem einzelnen Sprecher — sie tauchten unabhängig voneinander auf, in Talks über Skills, Migrationen, Review und Sicherheit. Und keiner davon nennt ein Werkzeug als Antwort.</p></div></div>
+</div>
+</section>
+
+<section class="slide slide--end">
+<div class="slide__inner">
+<h2>Fragen?</h2>
+<p>Vielen Dank für die Aufmerksamkeit.</p>
+<p>Tobias Kabbeck · <a href="mailto:tobias.kabbeck@zeit.de" target="_blank" rel="noopener">tobias.kabbeck@zeit.de</a></p>
+</div>
+</section>
+    </div>
+        <footer class="deck-footer">
+      <span class="deck-footer__org">DIE ZEIT</span>
+      <span class="deck-footer__title">AI Coding Summit London</span>
+      <span class="deck-footer__meta">Tobias Kabbeck · TT.MM.2026</span>
+      <span class="deck-footer__page" data-page></span>
+    </footer>
+
+  </div>
+    <!-- Ab Reveal 6 liegen die Plugins unter dist/plugin/<name>.js -->
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@6.0.1/dist/reveal.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@6.0.1/dist/plugin/highlight.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@6.0.1/dist/plugin/notes.js"></script>
+  <script>
+    // Feste Bühne 1600x900: alle CSS-Größen sind px auf dieser Bühne,
+    // Reveal skaliert das Ganze auf den Bildschirm.
+    Reveal.initialize({
+      width: 1600,
+      height: 900,
+      margin: 0.04,
+      center: false,
+      hash: true,
+      slideNumber: false,
+      transition: 'slide',
+      plugins: [RevealHighlight, RevealNotes],
+    });
+
+    const page = document.querySelector('[data-page]');
+    const paint = () => {
+      const total = Reveal.getTotalSlides();
+      page.textContent = `${Reveal.getSlidePastCount() + 1} / ${total}`;
+      document.body.dataset.layout = Reveal.getCurrentSlide()?.className || '';
+    };
+    Reveal.on('ready', paint);
+    Reveal.on('slidechanged', paint);
+  </script>
+
+</body>
+</html>

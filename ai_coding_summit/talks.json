@@ -1,0 +1,74 @@
+{
+  "alberts": {
+    "speaker": "Jodan Alberts",
+    "org": "advance.io",
+    "title": "What Claude Stats Tell Us About AI Coding Tools",
+    "url": "https://gitnation.com/contents/what-is-claude-coding"
+  },
+  "novick": {
+    "speaker": "Vladimir Novick",
+    "org": "Novick Labs",
+    "title": "From Prompting to Orchestrating: Coding Is Now a System",
+    "url": "https://gitnation.com/contents/from-prompting-to-orchestrating-coding-is-now-a-system"
+  },
+  "gechev": {
+    "speaker": "Minko Gechev",
+    "org": "Google",
+    "title": "Skill Design for LLM Agents",
+    "url": "https://gitnation.com/contents/skill-design-for-llm-agents"
+  },
+  "avila": {
+    "speaker": "Daniel Ávila",
+    "org": "Claude Code Templates",
+    "title": "Templates and Components for Claude Code",
+    "url": "https://gitnation.com/contents/skills-templates-and-components-for-claude-code-and-ai-coding-workflows"
+  },
+  "korop": {
+    "speaker": "Povilas Korop",
+    "org": "AI Coding Daily",
+    "title": "Learnings From 100+ Experiments Comparing LLMs for AI Coding",
+    "url": "https://gitnation.com/contents/learnings-from-100-experiments-comparing-llms-for-ai-coding"
+  },
+  "leimonis": {
+    "speaker": "Konstantinos Leimonis",
+    "org": "monday.com",
+    "title": "From One Repo to Hundreds: Building an AI Agent Fleet",
+    "url": "https://gitnation.com/contents/from-one-repo-to-hundreds-building-an-ai-agent-fleet-for-large-scale-code-migrations"
+  },
+  "iatsko": {
+    "speaker": "Valerii Iatsko",
+    "org": "Google",
+    "title": "From Prompt Engineering to Loop Engineering",
+    "url": "https://gitnation.com/contents/from-prompt-engineering-to-loop-engineering"
+  },
+  "sogl": {
+    "speaker": "Daniel Sogl",
+    "org": "Thinktecture",
+    "title": "AI Reviews AI — Closing the Loop in Agentic Development",
+    "url": "https://gitnation.com/contents/ai-reviews-ai-closing-the-loop-in-agentic-development"
+  },
+  "waardenburg": {
+    "speaker": "Bart Waardenburg",
+    "org": "Fallow",
+    "title": "Fast Code Generation Is Easy. Safe System-level Change Is Not.",
+    "url": "https://gitnation.com/contents/fast-code-generation-is-easy-safe-system-level-change-is-not"
+  },
+  "pierzchala": {
+    "speaker": "Michał Pierzchała",
+    "org": "Callstack",
+    "title": "Automating Mobile QA with Cloud Agents",
+    "url": "https://gitnation.com/contents/automating-mobile-qa-with-cloud-agents"
+  },
+  "kutsenko": {
+    "speaker": "Olena Kutsenko",
+    "org": "Confluent",
+    "title": "Streaming Systems, Hidden Risks, And AI-driven Consequences",
+    "url": "https://gitnation.com/contents/streaming-systems-hidden-risks-and-ai-driven-consequences"
+  },
+  "komesarook": {
+    "speaker": "Sam Komesarook",
+    "org": "Arts & Engineering Composite",
+    "title": "AI Agents Drift: Identifying and Correcting Subtle Failures",
+    "url": "https://gitnation.com/contents/ai-agents-drift-identifying-and-correcting-subtle-failures"
+  }
+}

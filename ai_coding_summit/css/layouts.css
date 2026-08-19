@@ -1,0 +1,213 @@
+/* ============================================================
+   layouts.css — Folien-Gerüste. Eine Klasse pro Layout,
+   gesetzt über '@layout:' in slides.md.
+
+     default | title | section | center | full | end
+
+   Aufbau jeder Folie:
+     <section class="slide slide--X">   Rahmen + Hintergrund
+       <div class="slide__inner">       Layout (Flex-Spalte)
+   Reveal setzt auf <section> ein inline 'display: block';
+   deshalb liegt das Layout eine Ebene tiefer.
+   ============================================================ */
+
+/* --- Gemeinsames Folien-Gerüst ------------------------------- */
+.reveal .slides > section.slide {
+  width: var(--stage-w);
+  height: var(--stage-h);
+  padding: 0;
+  overflow: hidden;
+}
+
+.slide__inner {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-5);
+  height: 100%;
+  padding: var(--slide-pad-y) var(--slide-pad-x) var(--sp-8);
+}
+
+/* Eyebrow (h4) klebt an der Hauptüberschrift */
+.slide h4 + h2 { margin-top: calc(var(--sp-3) * -1); }
+
+/* Überschrift bleibt oben, der Inhalt darunter zentriert sich
+   in der Restfläche — verhindert kopflastige Folien. */
+.slide--default .slide__inner > h2 + * { margin-top: auto; }
+.slide--default .slide__inner > :last-child { margin-bottom: auto; }
+
+/* Akzentstrich unter der Folienüberschrift */
+.slide--default h2::after,
+.slide--center h2::after {
+  content: "";
+  display: block;
+  width: 72px;
+  height: 4px;
+  margin-top: var(--sp-4);
+  border-radius: 2px;
+  background: var(--accent);
+}
+
+/* --- title --------------------------------------------------- */
+.slide--title {
+  background:
+    radial-gradient(1100px 520px at 88% -12%, var(--accent-tint), transparent 70%),
+    var(--bg);
+}
+
+.slide--title .slide__inner {
+  justify-content: center;
+  gap: var(--sp-4);
+}
+
+/* Zentriertes Lockup wie auf dem Konferenz-Banner:
+   Blitzmarke im dunklen Kreis, darunter Name und Claim. */
+.slide--title .slide__inner {
+  align-items: center;
+  text-align: center;
+}
+
+.slide--title .mark {
+  width: 150px;
+  height: 150px;
+  padding: 30px;
+  border-radius: 50%;
+  background: var(--ink);
+  margin-bottom: var(--sp-4);
+}
+
+.slide--title h1 {
+  font-size: var(--fs-h1);
+  max-width: 16em;
+}
+
+.slide--title h2 {
+  font-size: var(--fs-hero);
+  font-weight: 700;
+  line-height: 1.05;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-tight);
+  max-width: 14em;
+}
+
+.slide--title p {
+  font-size: var(--fs-small);
+  color: var(--ink-mute);
+}
+
+.slide--title .slide__inner > *:last-child { margin-top: var(--sp-5); }
+
+/* --- section (Kapiteltrenner) -------------------------------- */
+.slide--section { background: var(--ink); }
+
+.slide--section .slide__inner {
+  justify-content: center;
+  gap: var(--sp-4);
+}
+
+.slide--section h1,
+.slide--section h2 {
+  font-size: var(--fs-h1);
+  color: var(--surface);
+}
+
+.slide--section h4 { color: #8aa9ff; }
+.slide--section p { font-size: var(--fs-lead); color: #b6c0cc; }
+
+/* --- center -------------------------------------------------- */
+.slide--center .slide__inner {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.slide--center h2::after { margin-inline: auto; }
+.slide--center p { max-width: 22em; }
+.slide--center .quote { text-align: left; }
+
+/* --- full (randlos, z. B. großes Bild) ----------------------- */
+.slide--full .slide__inner {
+  padding: 0;
+  gap: 0;
+}
+
+.slide--full .figure,
+.slide--full .figure img {
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 0;
+}
+
+/* --- end ----------------------------------------------------- */
+.slide--end { background: var(--ink); }
+
+.slide--end .slide__inner {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  gap: var(--sp-5);
+}
+
+.slide--end h1,
+.slide--end h2 { color: var(--surface); }
+.slide--end p { color: #b6c0cc; }
+.slide--end a { color: #9dc0ff; border-bottom-color: rgba(157, 192, 255, 0.35); }
+
+/* --- Utility (über '@class:' setzbar) ------------------------- */
+.slide.fill .slide__inner > :last-child { flex: 1; margin-bottom: 0; }
+.slide.middle .slide__inner { justify-content: center; }
+.slide.top .slide__inner > * { margin-top: 0; margin-bottom: 0; }
+.slide.tight .slide__inner { gap: var(--sp-3); }
+.slide.wide p,
+.slide.wide > .slide__inner > ul,
+.slide.wide > .slide__inner > ol { max-width: none; }
+
+/* --- Fußzeile (liegt außerhalb der skalierten Bühne) ---------- */
+.deck-footer {
+  position: fixed;
+  inset: auto 0 0 0;
+  display: flex;
+  align-items: center;
+  gap: 1.5vw;
+  padding: 0.7vw 2vw;
+  font-family: var(--font-sans);
+  font-size: clamp(10px, 0.85vw, 15px);
+  letter-spacing: 0.02em;
+  color: var(--ink-mute);
+  border-top: 1px solid var(--line);
+  background: var(--bg);
+  transition: opacity 0.2s ease;
+  z-index: 30;
+}
+
+.deck-footer__org {
+  font-weight: 700;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.deck-footer__title { color: var(--ink-soft); }
+.deck-footer__meta { margin-left: auto; }
+
+.deck-footer__page {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+}
+
+/* Dunkle Folien färben auch den Rand um die skalierte Bühne
+   (Reveal setzt .reveal-viewport auf <body>) */
+body[data-layout*="slide--section"],
+body[data-layout*="slide--end"] {
+  background: var(--ink);
+}
+
+/* Auf ganzflächigen Folien tritt die Fußzeile zurück */
+body[data-layout*="slide--title"] .deck-footer,
+body[data-layout*="slide--section"] .deck-footer,
+body[data-layout*="slide--full"] .deck-footer,
+body[data-layout*="slide--end"] .deck-footer {
+  opacity: 0;
+}
